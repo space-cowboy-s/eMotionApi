@@ -22,41 +22,25 @@ class Booking
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=191, unique=true)
-     * @Assert\NotBlank
-     * @Assert\Type(
-     *     type="string",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
-     * @Groups("booking")
+     * @ORM\OneToOne(targetEntity="App\Entity\Car", inversedBy="booking", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $car;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="booking")
+     * @ORM\Column(type="float")
      */
-    private $users;
+    private $priceBooking;
 
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="booking", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function setUsers(?User $users): self
@@ -65,33 +49,38 @@ class Booking
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
+    public function getCar(): ?Car
     {
-        return $this->users;
+        return $this->car;
     }
 
-    public function addUser(User $user): self
+    public function setCar(Car $car): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setBooking($this);
-        }
+        $this->car = $car;
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function getPriceBooking(): ?float
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getBooking() === $this) {
-                $user->setBooking(null);
-            }
-        }
+        return $this->priceBooking;
+    }
+
+    public function setPriceBooking(float $priceBooking): self
+    {
+        $this->priceBooking = $priceBooking;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

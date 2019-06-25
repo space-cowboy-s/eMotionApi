@@ -94,13 +94,6 @@ class UsersController extends AbstractFOSRestController
         $lastname = $request->get('lastname');
         $adress = $request->get('adress');
         $country = $request->get('country');
-        //Find booking with id
-        $booking_id = $request->get('booking');
-        if (null !== $booking_id) {
-            $booking = $this->bookingRepository->find($booking_id);
-        }else {
-            $booking = null;
-        }
 
         if (null !== $firstname) {
             $user->setFirstname($firstname);
@@ -116,10 +109,6 @@ class UsersController extends AbstractFOSRestController
 
         if (null !== $country) {
             $user->setCountry($country);
-        }
-
-        if (null !== $booking) {
-            $user->setBooking($booking);
         }
 
         $userManager->validateMyPatchAssert($user, $validator);

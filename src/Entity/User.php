@@ -95,14 +95,6 @@ class User implements UserInterface
     private $country;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Booking", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank
-     * @Groups("booking")
-     */
-    private $booking;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $phone;
@@ -111,6 +103,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $driverLicence;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Booking", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $booking;
 
     public function getId(): ?int
     {
@@ -233,18 +230,6 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function setBooking(?Booking $booking): self
-    {
-        $this->booking = $booking;
-
-        return $this;
-    }
-
-    public function getBooking()
-    {
-        return $this->booking;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -265,6 +250,23 @@ class User implements UserInterface
     public function setDriverLicence(string $driverLicence): self
     {
         $this->driverLicence = $driverLicence;
+
+        return $this;
+    }
+
+    public function getBooking(): ?Booking
+    {
+        return $this->booking;
+    }
+
+    public function setBooking(Booking $booking): self
+    {
+        $this->booking = $booking;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $booking->getUser()) {
+            $booking->setUser($this);
+        }
 
         return $this;
     }

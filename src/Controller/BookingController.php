@@ -170,13 +170,7 @@ class BookingController extends AbstractFOSRestController
     {
         $booking = $this->bookingRepository->find($id);
 
-        $name = $request->get('name');
-        $slogan = $request->get('slogan');
-        $url = $request->get('url');
-
-        if (null !== $name) {
-            $booking->setName($name);
-        }
+        /*TO DO*/
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages

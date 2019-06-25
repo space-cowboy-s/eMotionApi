@@ -24,6 +24,7 @@ class AnonymousController extends AbstractFOSRestController
     }
 
     //List of all users
+
     /**
      * @Rest\Get("/api/all-users")
      * @Rest\View(serializerGroups={"userlight", "booking"})
@@ -58,6 +59,7 @@ class AnonymousController extends AbstractFOSRestController
     }
 
     //One user
+
     /**
      * @Rest\Get("/api/profile/{id}")
      * @Rest\View(serializerGroups={"userlight", "booking"})

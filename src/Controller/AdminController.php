@@ -99,6 +99,7 @@ class AdminController extends AbstractFOSRestController
     }
 
     //List of all users
+
     /**
      * @Rest\Get("/api/admin/users")
      * @Rest\View(serializerGroups={"user", "booking"})
@@ -209,7 +210,7 @@ class AdminController extends AbstractFOSRestController
         $booking_id = $request->get('booking');
         if (null !== $booking_id) {
             $booking = $this->bookingRepository->find($booking_id);
-        }else {
+        } else {
             $booking = null;
         }
 
@@ -285,13 +286,6 @@ class AdminController extends AbstractFOSRestController
         $email = $request->get('email');
         $adress = $request->get('adress');
         $country = $request->get('country');
-        //Find Booking with id
-        $booking_id = $request->get('booking');
-        if (null !== $booking_id) {
-            $booking = $this->bookingRepository->find($booking_id);
-        }else {
-            $booking = null;
-        }
 
         if (null !== $firstname) {
             $user->setFirstname($firstname);
@@ -311,10 +305,6 @@ class AdminController extends AbstractFOSRestController
 
         if (null !== $country) {
             $user->setCountry($country);
-        }
-
-        if (null !== $booking) {
-            $user->setBooking($booking);
         }
 
         //We test if all the conditions are fulfilled (Assert in Entity / User)
