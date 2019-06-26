@@ -1,0 +1,162 @@
+<?php return array(PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['FOS\\RestBundle\\Controller\\Annotations\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\Get')),
+            clone ($p['FOS\\RestBundle\\Controller\\Annotations\\View'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('FOS\\RestBundle\\Controller\\Annotations\\View')),
+            clone ($p['Nelmio\\ApiDocBundle\\Annotation\\Security'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Nelmio\\ApiDocBundle\\Annotation\\Security')),
+            clone ($p['Swagger\\Context'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Context')),
+            clone ($p['Swagger\\Annotations\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Get')),
+            clone ($p['Swagger\\Annotations\\Response'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Swagger\\Annotations\\Response')),
+            clone $p['Swagger\\Context'],
+            clone $p['Swagger\\Annotations\\Response'],
+            clone $p['Swagger\\Context'],
+            clone $p['Swagger\\Annotations\\Response'],
+            clone $p['Swagger\\Context'],
+            clone $p['Swagger\\Annotations\\Response'],
+            clone $p['Swagger\\Context'],
+            clone $p['Swagger\\Annotations\\Response'],
+            clone $p['Swagger\\Context'],
+            clone $p['Swagger\\Context'],
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/api/user/profile',
+                ],
+                'methods' => [
+                    [
+                        'GET',
+                    ],
+                ],
+            ],
+            'FOS\\RestBundle\\Controller\\Annotations\\View' => [
+                'serializerGroups' => [
+                    1 => [
+                        'user',
+                        'booking',
+                    ],
+                ],
+            ],
+            'stdClass' => [
+                'name' => [
+                    2 => 'api_key',
+                ],
+                '_context' => [
+                    2 => $o[3],
+                    4 => $o[15],
+                    $o[6],
+                    7 => $o[8],
+                    9 => $o[10],
+                    11 => $o[12],
+                    13 => $o[14],
+                ],
+                'filename' => [
+                    3 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    6 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    8 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    10 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    12 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    14 => '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                    '/app/vendor/doctrine/annotations/lib/Doctrine/Common/Annotations/DocParser.php',
+                ],
+                'line' => [
+                    3 => 820,
+                    6 => 820,
+                    8 => 820,
+                    10 => 820,
+                    12 => 820,
+                    14 => 820,
+                    820,
+                ],
+                'method' => [
+                    3 => 'Annotation',
+                    6 => 'Annotation',
+                    8 => 'Annotation',
+                    10 => 'Annotation',
+                    12 => 'Annotation',
+                    14 => 'Annotation',
+                    'Annotation',
+                ],
+                'class' => [
+                    3 => 'DocParser',
+                    6 => 'DocParser',
+                    8 => 'DocParser',
+                    10 => 'DocParser',
+                    12 => 'DocParser',
+                    14 => 'DocParser',
+                    'DocParser',
+                ],
+                'namespace' => [
+                    3 => 'Doctrine\\Common\\Annotations',
+                    6 => 'Doctrine\\Common\\Annotations',
+                    8 => 'Doctrine\\Common\\Annotations',
+                    10 => 'Doctrine\\Common\\Annotations',
+                    12 => 'Doctrine\\Common\\Annotations',
+                    14 => 'Doctrine\\Common\\Annotations',
+                    'Doctrine\\Common\\Annotations',
+                ],
+                'annotations' => [
+                    3 => [
+                        $o[2],
+                    ],
+                    6 => [
+                        $o[5],
+                    ],
+                    8 => [
+                        $o[7],
+                    ],
+                    10 => [
+                        $o[9],
+                    ],
+                    12 => [
+                        $o[11],
+                    ],
+                    14 => [
+                        $o[13],
+                    ],
+                    [
+                        $o[4],
+                    ],
+                ],
+                'tags' => [
+                    4 => [
+                        'User',
+                    ],
+                ],
+                'responses' => [
+                    4 => [
+                        $o[5],
+                        $o[7],
+                        $o[9],
+                        $o[11],
+                        $o[13],
+                    ],
+                ],
+                'response' => [
+                    5 => 200,
+                    7 => 204,
+                    9 => 400,
+                    11 => 403,
+                    13 => 404,
+                ],
+                'description' => [
+                    5 => 'Success',
+                    7 => 'No Content',
+                    9 => 'Bad Request',
+                    11 => 'Forbiden',
+                    13 => 'Not Found',
+                ],
+            ],
+        ],
+        [
+            $o[0],
+            $o[1],
+            $o[2],
+            $o[4],
+        ],
+        []
+    );
+
+});
