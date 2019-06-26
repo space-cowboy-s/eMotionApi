@@ -1,25 +1,19 @@
 version: "3.3"
 
 services:
-  api:
-    image: httpd:2.4
-    ports:
-      - "8080:80"
-    volumes:
-      - ./api/:/var/www/html/
 
   php:
     build:
       context: php-fpm
-    depends_on:
-      - database
-    working_dir: /code
+    ports:
+      - "80:80"
     volumes:
-      - ./api:/code
+      - ./api/:/var/www/html/
+      - ./server/000-default.conf:/etc/apache2/sites-available/000-default.conf
   composer:
     image: 'composer:latest'
     volumes:
-      - './api:/var/www/html/'
+      - './api:/app'
   database:
     image: mariadb:10.4
     ports:
@@ -37,25 +31,3 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: database
-
-  front:
-    image: httpd:2.4
-    ports:
-      - "80:80"
-    volumes:
-      - ./front/:/var/www/html/
-  node:
-    build:
-      context: node
-    ports:
-      - 4200:4200
-    volumes:
-        - ./front/:/home/node/app/frontend
-    tty: true
-    command:
-      - /bin/sh
-      - -c
-      - |
-        cd /home/node/app/frontend && npm start
-    expose:
-      - "4200"

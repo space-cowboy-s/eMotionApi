@@ -1,7 +1,17 @@
-FROM 		php:7.3-fpm
+FROM 		php:7.3-apache
 LABEL 		maintainer="Space Cowboy's"
 
-RUN apt-get update && apt-get install -y libicu-dev && apt-get clean
-RUN pecl install apcu xdebug
-RUN docker-php-ext-enable apcu xdebug
-RUN docker-php-ext-install pdo_mysql intl opcache
+RUN docker-php-ext-install pdo mysqli pdo_mysql
+
+RUN apt-get update -y && apt-get install -y libpng-dev libfreetype6-dev libyaml-dev
+
+RUN pecl install yamL
+
+RUN docker-php-ext-configure gd \
+        --with-freetype-dir=/usr/include/freetype2 \
+    && docker-php-ext-install gd
+
+RUN usermod -u 1000 www-data
+
+RUN a2enmod rewrite
+

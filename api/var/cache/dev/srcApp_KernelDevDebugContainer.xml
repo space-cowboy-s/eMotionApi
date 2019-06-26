@@ -3134,6 +3134,17 @@
           <argument key="stop">false</argument>
         </argument>
       </call>
+      <call method="add">
+        <argument type="service" id="fos_rest.request_matcher.69e9d3fd562e0ecffc5bce0c68d3b7a673d187934b742bc76452558275bbd7611198d478"/>
+        <argument type="collection">
+          <argument key="stop">true</argument>
+          <argument key="methods">null</argument>
+          <argument key="attributes" type="collection"/>
+          <argument key="prefer_extension">2.0</argument>
+          <argument key="fallback_format">html</argument>
+          <argument key="priorities" type="collection"/>
+        </argument>
+      </call>
     </service>
     <service id="fos_rest.format_request_matcher" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false" abstract="true"/>
     <service id="fos_rest.param_fetcher_listener" class="FOS\RestBundle\EventListener\ParamFetcherListener">
@@ -5106,6 +5117,13 @@
     </service>
     <service id="fos_rest.request_matcher.2364365e6bb6bfd5cadeda231e59db9139fadac2b673beb794ba3c0068839a899dc3c386" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
       <argument>^/api</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+      <argument type="collection"/>
+    </service>
+    <service id="fos_rest.request_matcher.69e9d3fd562e0ecffc5bce0c68d3b7a673d187934b742bc76452558275bbd7611198d478" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+      <argument>^/</argument>
       <argument>null</argument>
       <argument>null</argument>
       <argument>null</argument>

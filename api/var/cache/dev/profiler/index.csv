@@ -28,3 +28,8 @@ b1ce63,192.168.0.1,GET,http://localhost/api/user,1561561458,5f7626,200
 990376,192.168.0.1,GET,http://localhost/api/user/profile,1561561465,,401
 acad07,192.168.0.1,GET,http://localhost/favicon.ico,1561561467,b6fb10,200
 b6fb10,192.168.0.1,GET,http://localhost/favicon.ico,1561561467,,406
+659fbe,192.168.0.1,GET,http://localhost/api,1561562829,f60857,200
+f60857,192.168.0.1,GET,http://localhost/api,1561562830,,404
+f42a08,192.168.0.1,GET,http://localhost/,1561562837,,404
+0811fe,192.168.0.1,GET,http://localhost/favicon.ico,1561562840,a87864,200
+a87864,192.168.0.1,GET,http://localhost/favicon.ico,1561562841,,404
