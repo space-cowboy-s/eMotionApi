@@ -1111,6 +1111,6 @@ class __TwigTemplate_19e5e63d4007dc959ea13caec3a2d566a13407eb50261cc37641671d69d
         <span>{{ route|default(controller) }}</span>
     {%- endif %}
 {% endmacro %}
-", "@WebProfiler/Collector/request.html.twig", "/app/vendor/symfony/web-profiler-bundle/Resources/views/Collector/request.html.twig");
+", "@WebProfiler/Collector/request.html.twig", "/var/www/html/vendor/symfony/web-profiler-bundle/Resources/views/Collector/request.html.twig");
     }
 }

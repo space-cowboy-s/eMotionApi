@@ -1670,6 +1670,6 @@ class __TwigTemplate_445b4a656ec23a3fcb322e1e31d8fa2a8722026fb12a61024e5f51ce3b6
     });
 
 /*]]>*/</script>
-", "@WebProfiler/Profiler/base_js.html.twig", "/app/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/base_js.html.twig");
+", "@WebProfiler/Profiler/base_js.html.twig", "/var/www/html/vendor/symfony/web-profiler-bundle/Resources/views/Profiler/base_js.html.twig");
     }
 }

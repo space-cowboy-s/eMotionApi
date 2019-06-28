@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,6 +19,7 @@ class User implements UserInterface
         $this->roles = array('ROLE_USER');
         $this->apiKey = mt_rand(1000, 100000);
         $this->birthDate = new \DateTime();
+        $this->bookings = new ArrayCollection();
     }
 
     /**
@@ -105,9 +108,9 @@ class User implements UserInterface
     private $driverLicence;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Booking", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="user", orphanRemoval=true)
      */
-    private $booking;
+    private $bookings;
 
     public function getId(): ?int
     {
@@ -254,18 +257,32 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBooking(): ?Booking
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
     {
-        return $this->booking;
+        return $this->bookings;
     }
 
-    public function setBooking(Booking $booking): self
+    public function addBooking(Booking $booking): self
     {
-        $this->booking = $booking;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $booking->getUser()) {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
             $booking->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getUser() === $this) {
+                $booking->setUser(null);
+            }
         }
 
         return $this;

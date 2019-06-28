@@ -401,6 +401,6 @@ file that was distributed with this source code. #}
     {% endblock swagger_initialization %}
 </body>
 </html>
-", "@NelmioApiDoc/SwaggerUi/index.html.twig", "/app/vendor/nelmio/api-doc-bundle/Resources/views/SwaggerUi/index.html.twig");
+", "@NelmioApiDoc/SwaggerUi/index.html.twig", "/var/www/html/vendor/nelmio/api-doc-bundle/Resources/views/SwaggerUi/index.html.twig");
     }
 }
