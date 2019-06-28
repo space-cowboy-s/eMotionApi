@@ -22,43 +22,40 @@ class Booking
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Car", inversedBy="booking", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $car;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $priceBooking;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="booking", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Car")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $car;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $startBooking;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endBooking;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $totalPriceHT;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setUsers(?User $users): self
-    {
-        $this->users = $users;
-        return $this;
-    }
-
-    public function getCar(): ?Car
-    {
-        return $this->car;
-    }
-
-    public function setCar(Car $car): self
-    {
-        $this->car = $car;
-
-        return $this;
     }
 
     public function getPriceBooking(): ?float
@@ -78,9 +75,57 @@ class Booking
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
+
+        return $this;
+    }
+
+    public function getStartBooking(): ?\DateTimeInterface
+    {
+        return $this->startBooking;
+    }
+
+    public function setStartBooking(\DateTimeInterface $startBooking): self
+    {
+        $this->startBooking = $startBooking;
+
+        return $this;
+    }
+
+    public function getEndBooking(): ?\DateTimeInterface
+    {
+        return $this->endBooking;
+    }
+
+    public function setEndBooking(?\DateTimeInterface $endBooking): self
+    {
+        $this->endBooking = $endBooking;
+
+        return $this;
+    }
+
+    public function getTotalPriceHT(): ?float
+    {
+        return $this->totalPriceHT;
+    }
+
+    public function setTotalPriceHT(float $totalPriceHT): self
+    {
+        $this->totalPriceHT = $totalPriceHT;
 
         return $this;
     }

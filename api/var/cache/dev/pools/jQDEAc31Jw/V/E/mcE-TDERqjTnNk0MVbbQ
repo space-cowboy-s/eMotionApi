@@ -2,7 +2,7 @@
 
     return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
         $o = [
-            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\OneToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\OneToOne')),
+            clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
             clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
         ],
         null,
@@ -10,15 +10,6 @@
             'stdClass' => [
                 'targetEntity' => [
                     'App\\Entity\\Car',
-                ],
-                'inversedBy' => [
-                    'booking',
-                ],
-                'cascade' => [
-                    [
-                        'persist',
-                        'remove',
-                    ],
                 ],
                 'nullable' => [
                     1 => false,

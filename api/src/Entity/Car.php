@@ -57,9 +57,14 @@ class Car
     private $buyingPrice;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Booking", mappedBy="car", cascade={"persist", "remove"})
+     * @ORM\Column(type="float")
      */
-    private $booking;
+    private $bail;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $pricePerDay;
 
     public function getId(): ?int
     {
@@ -162,19 +167,26 @@ class Car
         return $this;
     }
 
-    public function getBooking(): ?Booking
+    public function getBail(): ?float
     {
-        return $this->booking;
+        return $this->bail;
     }
 
-    public function setBooking(Booking $booking): self
+    public function setBail(float $bail): self
     {
-        $this->booking = $booking;
+        $this->bail = $bail;
 
-        // set the owning side of the relation if necessary
-        if ($this !== $booking->getCar()) {
-            $booking->setCar($this);
-        }
+        return $this;
+    }
+
+    public function getPricePerDay(): ?float
+    {
+        return $this->pricePerDay;
+    }
+
+    public function setPricePerDay(float $pricePerDay): self
+    {
+        $this->pricePerDay = $pricePerDay;
 
         return $this;
     }
