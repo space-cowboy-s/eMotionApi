@@ -1,0 +1,12 @@
+App\Entity\Car:
+  car_{1..10}:
+    brand: <company()>
+    model: <company()>
+    serialNumber: <swiftBicNumber()>
+    color: <colorName()>
+    numberplate: <postcode()>
+    numberKilometers: <numberBetween(10, 100000)>
+    purchaseDate: <dateTime('now', 'Europe/Paris')>
+    buyingPrice: <numberBetween(10000, 30000)>
+    bail: <numberBetween(500, 5000)>
+    pricePerDay: <numberBetween(30, 100)>
