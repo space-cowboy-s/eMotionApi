@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -112,6 +113,12 @@ class User implements UserInterface
      */
     private $bookings;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -215,12 +222,20 @@ class User implements UserInterface
 
     public function getPassword()
     {
-        // TODO: Implement getPassword() method.
+        return $this->password;
     }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
 
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     public function getUsername()
@@ -287,4 +302,5 @@ class User implements UserInterface
 
         return $this;
     }
+
 }

@@ -128,6 +128,10 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
+     * @param Booking $booking
+     * @param BookingManager $bookingManager
+     * @param ConstraintViolationListInterface $validationErrors
+     * @return \FOS\RestBundle\View\View
      */
     public function postApiAdminBooking(Booking $booking, BookingManager $bookingManager, ConstraintViolationListInterface $validationErrors)
     {
