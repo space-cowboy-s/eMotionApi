@@ -1,23 +1,33 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: aminejerbouh
+ * Date: 23/07/2019
+ * Time: 11:44
+ */
 
 namespace App\Manager;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+
+use App\Entity\Car;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-class UserManager
+class CarManager
 {
-    private $userRepository;
+    private $carRepository;
 
-    public function __construct(UserRepository $userRepository)
+    /**
+     * CarManager constructor.
+     * @param $carRepository
+     */
+    public function __construct($carRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->carRepository = $carRepository;
     }
+
 
     //We test if all the conditions are fulfilled (Assert in Entity / User)
     public function validateMyPostAssert(ConstraintViolationListInterface $validationErrors)
@@ -41,9 +51,9 @@ class UserManager
     }
 
     //We test if all the conditions are fulfilled (Assert in Entity / User)
-    public function validateMyPatchAssert(User $user, ValidatorInterface $validator)
+    public function validateMyPatchAssert(Car $car, ValidatorInterface $validator)
     {
-        $validationErrors = $validator->validate($user);
+        $validationErrors = $validator->validate($car);
         $errors = array();
         if ($validationErrors->count() > 0) {
             /** @var ConstraintViolation $constraintViolation */

@@ -20,6 +20,8 @@ security:
             guard:
                 authenticators:
                 - App\Security\ApiTokenAuthentication
+    encoders:
+      App\Entity\User: bcrypt
 
             # activate different ways to authenticate
 

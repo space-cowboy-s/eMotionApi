@@ -18,6 +18,7 @@ class UsersController extends AbstractFOSRestController
     private $userRepository;
     private $em;
     private $bookingRepository;
+    private $encoder;
 
     public function __construct(UserRepository $userRepository, BookingRepository $bookingRepository, EntityManagerInterface $em)
     {

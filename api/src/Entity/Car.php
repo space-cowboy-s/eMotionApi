@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CarRepository")
@@ -13,51 +14,61 @@ class Car
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("car")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $model;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $serialNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $numberplate;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("car")
      */
     private $numberKilometers;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("car")
      */
     private $purchaseDate;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("car")
      */
     private $buyingPrice;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Booking", mappedBy="car", cascade={"persist", "remove"})
+     * @Groups("car")
      */
     private $booking;
 
