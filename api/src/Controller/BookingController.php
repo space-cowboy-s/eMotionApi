@@ -73,7 +73,7 @@ class BookingController extends AbstractFOSRestController
      * @Rest\Get("/api/bookings/{id}")
      * @Rest\View(serializerGroups={"booking"})
      * @SWG\Get(
-     *      tags={"Booking"},
+     *      tags={"Admin/Booking"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",

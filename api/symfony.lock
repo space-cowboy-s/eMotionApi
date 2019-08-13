@@ -227,6 +227,9 @@
             "ref": "5f8a51c0fad684396f6b6c0fd770e043439cb632"
         }
     },
+    "symfony/form": {
+        "version": "v4.2.10"
+    },
     "symfony/framework-bundle": {
         "version": "4.2",
         "recipe": {

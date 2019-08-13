@@ -87,8 +87,6 @@ class UsersController extends AbstractFOSRestController
      */
     public function patchApiUserProfile(UserManager $userManager, Request $request, ValidatorInterface $validator)
     {
-        //We test if all the conditions are fulfilled (Assert in Entity / User)
-        //Return false if not
         $user = $this->getUser();
 
         $firstname = $request->get('firstname');
