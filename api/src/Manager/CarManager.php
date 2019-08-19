@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Repository\CarRepository;
 
 class CarManager
 {
@@ -23,7 +24,7 @@ class CarManager
      * CarManager constructor.
      * @param $carRepository
      */
-    public function __construct($carRepository)
+    public function __construct(CarRepository $carRepository)
     {
         $this->carRepository = $carRepository;
     }

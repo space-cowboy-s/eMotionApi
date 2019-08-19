@@ -115,6 +115,10 @@ class AnonymousController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *     )
+     * @param User $user
+     * @param UserManager $userManager
+     * @param ConstraintViolationListInterface $validationErrors
+     * @return \FOS\RestBundle\View\View
      */
     public function postApiNewUser(User $user, UserManager $userManager, ConstraintViolationListInterface $validationErrors)
     {
