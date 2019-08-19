@@ -143,4 +143,14 @@ class CarController extends AbstractFOSRestController
         $this->em->flush();
         return $this->view($car);
     }
+
+    /**
+     * @Rest\Get("/api/car/{id}")
+     * @param int $id
+     * @return \FOS\RestBundle\View\View
+     */
+    public function getApiCar(int $id) {
+        $car = $this->carRepository->find($id);
+        return $this->view($car);
+    }
 }
