@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Manager\BookingManager;
 use App\Repository\BookingRepository;
+use App\Repository\CarRepository;
 use App\Repository\UserRepository;
-
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -24,21 +24,24 @@ class BookingController extends AbstractFOSRestController
     private $userRepository;
     private $em;
     private $bookingRepository;
+    private $carRepository;
 
-    public function __construct(UserRepository $userRepository, BookingRepository $bookingRepository, EntityManagerInterface $em)
+    public function __construct(UserRepository $userRepository, BookingRepository $bookingRepository, CarRepository $carRepository, EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
         $this->em = $em;
         $this->bookingRepository = $bookingRepository;
+        $this->carRepository = $carRepository;
     }
 
     //All Bookings
 
     /**
-     * @Rest\Get("/api/bookings")
-     * @Rest\View(serializerGroups={"booking"})
+     * @Rest\Get("/api/admin/bookings")
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Security(name="api_key")
      * @SWG\Get(
-     *      tags={"Booking"},
+     *      tags={"Admin/Booking"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",
@@ -70,8 +73,9 @@ class BookingController extends AbstractFOSRestController
     //One Bookings
 
     /**
-     * @Rest\Get("/api/bookings/{id}")
-     * @Rest\View(serializerGroups={"booking"})
+     * @Rest\Get("/api/admin/bookings/{id}")
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Security(name="api_key")
      * @SWG\Get(
      *      tags={"Admin/Booking"},
      *      @SWG\Response(
@@ -94,20 +98,21 @@ class BookingController extends AbstractFOSRestController
      *             response=404,
      *             description="Not Found",
      *         ),
-     *)
+     *     )
+     * @param Booking $booking
+     * @return \FOS\RestBundle\View\View
      */
-    public function getApiAdminOneBooking($id)
+    public function getApiAdminOneBooking(Booking $booking)
     {
-        $booking = $this->bookingRepository->find($id);
         return $this->view($booking, 200);
     }
 
-    //Create One Bookings by admin
+    //Add booking by admin
 
     /**
      * @Rest\Post("/api/admin/bookings/add")
      * @ParamConverter("booking", converter="fos_rest.request_body")
-     * @Rest\View(serializerGroups={"booking"})
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
      * @Security(name="api_key")
      * @SWG\Post(
      *      tags={"Admin/Booking"},
@@ -130,11 +135,52 @@ class BookingController extends AbstractFOSRestController
      *)
      * @param Booking $booking
      * @param BookingManager $bookingManager
+     * @param Request $request
      * @param ConstraintViolationListInterface $validationErrors
      * @return \FOS\RestBundle\View\View
      */
-    public function postApiAdminBooking(Booking $booking, BookingManager $bookingManager, ConstraintViolationListInterface $validationErrors)
+    public function postApiAdminBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
     {
+        /*Select user by email*/
+        $userSelect = $request->get('user');
+        if (null !== $userSelect) {
+            $user = $this->userRepository->findOneBy(array('email' => $userSelect));
+        }else {
+            $user = null;
+        }
+
+        /*Select car by brand and model*/
+        $carSelect = $request->get('car');
+        if (null !== $carSelect) {
+            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        }else {
+            $car = null;
+        }
+
+        $startBooking = $request->get('startBooking');
+        $endBooking = $request->get('endBooking');
+        $totalPriceHT = $request->get('totalPriceHT');
+
+        if (null !== $user) {
+            $booking->setUser($user);
+        }
+
+        if (null !== $car) {
+            $booking->setCar($car);
+        }
+
+        if (null !== $startBooking) {
+            $booking->setStartBooking($startBooking);
+        }
+
+        if (null !== $endBooking) {
+            $booking->setEndBooking($endBooking);
+        }
+
+        if (null !== $totalPriceHT) {
+            $booking->setTotalPriceHT($totalPriceHT);
+        }
+
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
         $bookingManager->validateMyPostAssert($validationErrors);
@@ -169,12 +215,43 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
+     * @param BookingManager $bookingManager
+     * @param ValidatorInterface $validator
+     * @param Request $request
+     * @param $id
+     * @return \FOS\RestBundle\View\View
      */
     public function patchApiAdminBooking(BookingManager $bookingManager, ValidatorInterface $validator, Request $request, $id)
     {
         $booking = $this->bookingRepository->find($id);
 
-        /*TO DO*/
+        /*Select car by brand and model*/
+        $carSelect = $request->get('car');
+        if (null !== $carSelect) {
+            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        }else {
+            $car = null;
+        }
+
+        $startBooking = $request->get('startBooking');
+        $endBooking = $request->get('endBooking');
+        $totalPriceHT = $request->get('totalPriceHT');
+
+        if (null !== $car) {
+            $booking->setCar($car);
+        }
+
+        if (null !== $startBooking) {
+            $booking->setStartBooking($startBooking);
+        }
+
+        if (null !== $endBooking) {
+            $booking->setEndBooking($endBooking);
+        }
+
+        if (null !== $totalPriceHT) {
+            $booking->setTotalPriceHT($totalPriceHT);
+        }
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
@@ -214,16 +291,91 @@ class BookingController extends AbstractFOSRestController
      *             description="Foreign Key Violation",
      *         ),
      *)
+     * @param Booking $booking
+     * @return \FOS\RestBundle\View\View
      */
     public function deleteApiBooking(Booking $booking)
     {
-        try {
             $this->em->remove($booking);
             $this->em->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
-            return $this->view('ForeignKey Constraint Violation ! Can not remove a Booking with User !', 400);
-        }
 
         return $this->view('Booking are successfully removed !', 204);
+    }
+
+    //User booking car
+
+    /**
+     * @Rest\Post("/api/user/bookings/add")
+     * @ParamConverter("booking", converter="fos_rest.request_body")
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Security(name="api_key")
+     * @SWG\Post(
+     *      tags={"User/Booking"},
+     *      @SWG\Response(
+     *             response=201,
+     *             description="Created",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param Booking $booking
+     * @param BookingManager $bookingManager
+     * @param Request $request
+     * @param ConstraintViolationListInterface $validationErrors
+     * @return \FOS\RestBundle\View\View
+     */
+    public function postApiUserBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
+    {
+        $user = $this->getUser();
+
+        /*Select car by brand and model*/
+        $carSelect = $request->get('car');
+        if (null !== $carSelect) {
+            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        }else {
+            $car = null;
+        }
+
+        $startBooking = $request->get('startBooking');
+        $endBooking = $request->get('endBooking');
+        $totalPriceHT = $request->get('totalPriceHT');
+
+        if (null !== $user) {
+            $booking->setUser($user);
+        }
+
+        if (null !== $car) {
+            $booking->setCar($car);
+        }
+
+        if (null !== $startBooking) {
+            $booking->setStartBooking($startBooking);
+        }
+
+        if (null !== $endBooking) {
+            $booking->setEndBooking($endBooking);
+        }
+
+        if (null !== $totalPriceHT) {
+            $booking->setTotalPriceHT($totalPriceHT);
+        }
+
+        //We test if all the conditions are fulfilled (Assert in Entity / Booking)
+        //Return -> Throw a 400 Bad Request with all errors messages
+        $bookingManager->validateMyPostAssert($validationErrors);
+
+        $this->em->persist($booking);
+        $this->em->flush();
+        return $this->view($booking, 201);
     }
 }

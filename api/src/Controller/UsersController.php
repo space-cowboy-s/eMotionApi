@@ -91,6 +91,7 @@ class UsersController extends AbstractFOSRestController
 
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
+        $email = $request->get('email');
         $adress = $request->get('adress');
         $country = $request->get('country');
 
@@ -102,6 +103,10 @@ class UsersController extends AbstractFOSRestController
             $user->setLastname($lastname);
         }
 
+        if (null !== $email) {
+            $user->setEmail($email);
+        }
+
         if (null !== $adress) {
             $user->setAdress($adress);
         }
@@ -110,6 +115,8 @@ class UsersController extends AbstractFOSRestController
             $user->setCountry($country);
         }
 
+        //We test if all the conditions are fulfilled (Assert in Entity / Booking)
+        //Return -> Throw a 400 Bad Request with all errors messages
         $userManager->validateMyPatchAssert($user, $validator);
 
         $this->em->persist($user);
