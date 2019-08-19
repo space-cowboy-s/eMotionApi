@@ -185,15 +185,4 @@ class Car
         return $this;
     }
 
-    public function getPricePerDay(): ?float
-    {
-        return $this->pricePerDay;
-    }
-
-    public function setPricePerDay(float $pricePerDay): self
-    {
-        $this->pricePerDay = $pricePerDay;
-
-        return $this;
-    }
 }
