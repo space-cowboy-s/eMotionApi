@@ -110,7 +110,7 @@ class BookingController extends AbstractFOSRestController
      * @Rest\View(serializerGroups={"booking"})
      * @Security(name="api_key")
      * @SWG\Post(
-     *      tags={"Booking/Admin"},
+     *      tags={"Admin/Booking"},
      *      @SWG\Response(
      *             response=201,
      *             description="Created",
@@ -151,7 +151,7 @@ class BookingController extends AbstractFOSRestController
      * @Rest\View(serializerGroups={"booking"})
      * @Security(name="api_key")
      * @SWG\Patch(
-     *      tags={"Booking/Admin"},
+     *      tags={"Admin/Booking"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",
@@ -192,7 +192,7 @@ class BookingController extends AbstractFOSRestController
      * @Rest\View(serializerGroups={"booking"})
      * @Security(name="api_key")
      * @SWG\Delete(
-     *      tags={"Booking/Admin"},
+     *      tags={"Admin/Booking"},
      *     @SWG\Response(
      *             response=204,
      *             description="No Content",
