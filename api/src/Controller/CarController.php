@@ -13,6 +13,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CarController extends AbstractFOSRestController
 {
@@ -85,6 +86,71 @@ class CarController extends AbstractFOSRestController
 
         $this->em->persist($car);
         $this->em->flush();
+        return $this->view($car);
+    }
+
+    /**
+     * @Rest\Patch("/api/car/{id}")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @param $id
+     * @return \FOS\RestBundle\View\View
+     */
+    public function patchApiCar(Request $request, ValidatorInterface $validator, $id) {
+
+        $car = $this->carRepository->find($id);
+        $validationErrors = $validator->validate($car);
+        if ($validationErrors->count() > 0) {
+            foreach ($validationErrors as $constraintViolation ){
+                $message = $constraintViolation->getMessage();
+                $propertyPath = $constraintViolation->getPropertyPath();
+                $errors[] = ['message' => $message, 'propertyPath' => $propertyPath];
+            }
+        }
+
+        if (!empty($errors)) {
+            throw new BadRequestHttpException(\json_encode($errors));
+        }
+        if ($request->get("brand") !== null) {
+            $car->setBrand($request->get("brand"));
+        }
+        if ($request->get("model") !== null) {
+            $car->setModel($request->get("model"));
+        }
+        if ($request->get("serialNumber") !== null) {
+            $car->setSerialNumber($request->get("serialNumber"));
+        }
+        if ($request->get("color") !== null) {
+            $car->setColor($request->get("color"));
+        }
+        if ($request->get("numberplate") !== null) {
+            $car->setNumberplate($request->get("numberplate"));
+        }
+        if ($request->get("numberKilometers") !== null) {
+            $car->setNumberKilometers($request->get("numberKilometers"));
+        }
+        if ($request->get("purchaseDate") !== null) {
+            $car->setPurchaseDate(new \DateTime($request->get("purchaseDate")));
+        }
+        if ($request->get("buyingPrice") !== null) {
+            $car->setBuyingPrice($request->get("buyingPrice"));
+        }
+        if ($request->get("bail") !== null) {
+            $car->setBail($request->get("bail"));
+        }
+
+        $this->em->persist($car);
+        $this->em->flush();
+        return $this->view($car);
+    }
+
+    /**
+     * @Rest\Get("/api/car/{id}")
+     * @param int $id
+     * @return \FOS\RestBundle\View\View
+     */
+    public function getApiCar(int $id) {
+        $car = $this->carRepository->find($id);
         return $this->view($car);
     }
 }
