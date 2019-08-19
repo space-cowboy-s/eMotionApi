@@ -96,7 +96,8 @@ class CarController extends AbstractFOSRestController
      * @param $id
      * @return \FOS\RestBundle\View\View
      */
-    public function patchApiCar(Request $request, ValidatorInterface $validator, $id) {
+    public function patchApiCar(Request $request, ValidatorInterface $validator, $id)
+    {
 
         $car = $this->carRepository->find($id);
         $validationErrors = $validator->validate($car);
@@ -149,8 +150,22 @@ class CarController extends AbstractFOSRestController
      * @param int $id
      * @return \FOS\RestBundle\View\View
      */
-    public function getApiCar(int $id) {
+    public function getApiCar(int $id)
+    {
         $car = $this->carRepository->find($id);
         return $this->view($car);
+    }
+
+    /**
+     * @Rest\Delete("api/car/{id}")
+     * @param Car $car
+     * @return \FOS\RestBundle\View\View
+     */
+    public function deleteApiCar(Car $car)
+    {
+        $this->em->remove($car);
+        $this->em->flush();
+
+        return $this->view("Vehicle deleted");
     }
 }
