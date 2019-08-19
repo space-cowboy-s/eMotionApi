@@ -70,12 +70,7 @@ class Car
      * @ORM\Column(type="float")
      */
     private $bail;
-  
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Booking", mappedBy="car", cascade={"persist", "remove"})
-     * @Groups("car")
-     */
-    private $pricePerDay;
+
 
     public function getId(): ?int
     {

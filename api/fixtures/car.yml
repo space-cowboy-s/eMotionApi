@@ -9,4 +9,3 @@ App\Entity\Car:
     purchaseDate: <dateTime('now', 'Europe/Paris')>
     buyingPrice: <numberBetween(10000, 30000)>
     bail: <numberBetween(500, 5000)>
-    pricePerDay: <numberBetween(30, 100)>
