@@ -1,3 +1,0 @@
-App\Entity\Booking:
-  Booking_{1..10}:
-    name: <realText(25, 2)>

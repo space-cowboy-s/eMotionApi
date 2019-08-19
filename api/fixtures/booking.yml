@@ -1,0 +1,8 @@
+App\Entity\Booking:
+  booking_{1..10}:
+    user: '@user_*'
+    priceBooking: <numberBetween(10, 200)>
+    car: '@car_*'
+    startBooking: <dateTimeBetween('now', '+1 years', 'Europe/Paris')>
+    endBooking: <dateTimeBetween('+1 days', '+1 years', 'Europe/Paris')>
+    totalPriceHT: <numberBetween(200, 4000)>

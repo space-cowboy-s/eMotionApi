@@ -1,0 +1,14 @@
+App\Entity\User:
+  user (template):
+    firstname: <firstName()>
+    lastname: <lastName()>
+    password: <password()>
+    email: <email()>
+    adress: <streetAddress()>
+    country: <country()>
+    phone: <e164PhoneNumber()>
+    driverLicence: <numberBetween(10000, 90000)>
+  user_{1} (extends user):
+    roles: [ROLE_ADMIN]
+  user_{2..10} (extends user):
+
