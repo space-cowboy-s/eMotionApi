@@ -2,6 +2,7 @@ App\Entity\User:
   user (template):
     firstname: <firstName()>
     lastname: <lastName()>
+    password: <password()>
     email: <email()>
     adress: <streetAddress()>
     country: <country()>
