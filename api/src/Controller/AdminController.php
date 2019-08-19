@@ -202,7 +202,6 @@ class AdminController extends AbstractFOSRestController
 
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
-        //Admin can edit his email
         $email = $request->get('email');
         $adress = $request->get('adress');
         $country = $request->get('country');
@@ -273,16 +272,8 @@ class AdminController extends AbstractFOSRestController
      */
     public function patchApiAdminUserProfile(User $user, Request $request, UserManager $userManager, ValidatorInterface $validator)
     {
-        //Sample pach with UserManager
-        //$userManager->patchProfile($user, 'firstname', $request);
-        //$userManager->patchProfile($user, 'lastname', $request);
-        //$userManager->patchProfile($user, 'email', $request);
-        //$userManager->patchProfile($user, 'adress', $request);
-        //$userManager->patchProfile($user, 'country', $request);
-
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
-        //Admin can edit user email
         $email = $request->get('email');
         $adress = $request->get('adress');
         $country = $request->get('country');

@@ -22,52 +22,39 @@ class Booking
     private $id;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $priceBooking;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("userlight")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
-     * @ORM\JoinColumn(nullable=false)
+     * @Groups("car")
      */
     private $car;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("booking")
      */
     private $startBooking;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("booking")
      */
     private $endBooking;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("booking")
      */
     private $totalPriceHT;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPriceBooking(): ?float
-    {
-        return $this->priceBooking;
-    }
-
-    public function setPriceBooking(float $priceBooking): self
-    {
-        $this->priceBooking = $priceBooking;
-
-        return $this;
     }
 
     public function getUser(): ?User
