@@ -60,6 +60,7 @@ class AnonymousController extends AbstractFOSRestController
     public function getApiConnexion(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $userSelect = $request->get('user');
+        $userByEmail = null;
 
         if (null !== $userSelect) {
             $userByEmail = $this->userRepository->findOneBy(array('email' => $userSelect['email']));
