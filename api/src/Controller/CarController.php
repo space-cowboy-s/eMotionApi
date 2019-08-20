@@ -221,6 +221,7 @@ class CarController extends AbstractFOSRestController
     }
 
 
+    //Admin car delete
     /**
      * @Rest\Delete("api/admin/car/{id}")
      * @Security(name="api_key")
