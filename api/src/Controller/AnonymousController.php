@@ -33,7 +33,7 @@ class AnonymousController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/connexion")
      * @Rest\View(serializerGroups={"apiUser"})
-     * @SWG\Get(
+     * @SWG\Post(
      *      tags={"Anonymous"},
      *      @SWG\Response(
      *             response=200,
