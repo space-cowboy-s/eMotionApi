@@ -68,6 +68,7 @@ class Car
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("car")
      */
     private $bail;
 
