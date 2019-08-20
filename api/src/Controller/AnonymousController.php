@@ -14,7 +14,9 @@ use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use App\Service\MailerService;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class AnonymousController extends AbstractFOSRestController
 {
@@ -178,10 +180,10 @@ class AnonymousController extends AbstractFOSRestController
      * @param UserManager $userManager
      * @param Request $request
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \FOS\RestBundle\View\View
      */
     public function postApiNewUser(User $user, UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ConstraintViolationListInterface $validationErrors)
     {
+        $mailer = new MailerService();
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
         $email = $request->get('email');
@@ -237,6 +239,7 @@ class AnonymousController extends AbstractFOSRestController
 
         $this->em->persist($user);
         $this->em->flush();
-        return $this->view($user, 201);
+        $mailer->sendNewUserMail($user->getEmail(), $user->getFirstname());
+        return $this->json($user, 201);
     }
 }
