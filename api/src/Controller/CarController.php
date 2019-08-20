@@ -59,15 +59,16 @@ class CarController extends AbstractFOSRestController
     {
         $car = $this->carRepository->findAll();
 
-        return $this->view($car, 200);
+        return $this->json($car, 200);
     }
 
     /**
      * @Rest\Post("/api/car/add")
+     * @Rest\View(serializerGroups={"car"})
      * @ParamConverter("car", converter="fos_rest.request_body")
      * @param Car $car
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \FOS\RestBundle\View\View
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function postApiCarListing(Car $car, ConstraintViolationListInterface $validationErrors)
     {
@@ -86,7 +87,7 @@ class CarController extends AbstractFOSRestController
 
         $this->em->persist($car);
         $this->em->flush();
-        return $this->view($car);
+        return $this->json($car);
     }
 
     /**
