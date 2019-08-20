@@ -92,8 +92,13 @@ class UsersController extends AbstractFOSRestController
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
         $email = $request->get('email');
+        $birthDate = $request->get('birthDate');
         $adress = $request->get('adress');
         $country = $request->get('country');
+        $phone = $request->get('phone');
+        $driverLicence = $request->get('driverLicence');
+
+
 
         if (null !== $firstname) {
             $user->setFirstname($firstname);
@@ -107,12 +112,24 @@ class UsersController extends AbstractFOSRestController
             $user->setEmail($email);
         }
 
+        if (null !== $birthDate) {
+            $user->setAdress($birthDate);
+        }
+
         if (null !== $adress) {
             $user->setAdress($adress);
         }
 
         if (null !== $country) {
             $user->setCountry($country);
+        }
+
+        if (null !== $phone) {
+            $user->setCountry($phone);
+        }
+
+        if (null !== $driverLicence) {
+            $user->setCountry($driverLicence);
         }
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
