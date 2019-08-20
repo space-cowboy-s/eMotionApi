@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,6 +33,7 @@ class CarController extends AbstractFOSRestController
         $this->em = $em;
     }
 
+    //Anonymous can see all cars
     /**
      * @Rest\Get("/api/cars")
      * @Rest\View(serializerGroups={"car"})
@@ -63,13 +65,64 @@ class CarController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/car/add")
+     * @Rest\Get("/api/car/{id}")
+     * @SWG\Get(
+     *     tags={"Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param int $id
+     * @return \FOS\RestBundle\View\View
+     */
+    public function getApiCar(int $id)
+    {
+        $car = $this->carRepository->find($id);
+        return $this->view($car);
+    }
+
+    //Admin car add
+    /**
+     * @Rest\Post("/api/admin/car/add")
      * @ParamConverter("car", converter="fos_rest.request_body")
+     * @Security(name="api_key")
+     * @SWG\Post(
+     *     tags={"Admin/Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
      * @param Car $car
      * @param ConstraintViolationListInterface $validationErrors
      * @return \FOS\RestBundle\View\View
      */
-    public function postApiCarListing(Car $car, ConstraintViolationListInterface $validationErrors)
+    public function postApiAdminCarListing(Car $car, ConstraintViolationListInterface $validationErrors)
     {
         $errors = array();
         if ($validationErrors->count() > 0) {
@@ -89,14 +142,36 @@ class CarController extends AbstractFOSRestController
         return $this->view($car);
     }
 
+    //Admin car edit
     /**
-     * @Rest\Patch("/api/car/{id}")
+     * @Rest\Patch("/api/admin/car/{id}")
+     * @Security(name="api_key")
+     * @SWG\Patch(
+     *     tags={"Admin/Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
      * @param Request $request
      * @param ValidatorInterface $validator
      * @param $id
      * @return \FOS\RestBundle\View\View
+     * @throws \Exception
      */
-    public function patchApiCar(Request $request, ValidatorInterface $validator, $id)
+    public function patchApiAdminCar(Request $request, ValidatorInterface $validator, $id)
     {
 
         $car = $this->carRepository->find($id);
@@ -145,19 +220,30 @@ class CarController extends AbstractFOSRestController
         return $this->view($car);
     }
 
-    /**
-     * @Rest\Get("/api/car/{id}")
-     * @param int $id
-     * @return \FOS\RestBundle\View\View
-     */
-    public function getApiCar(int $id)
-    {
-        $car = $this->carRepository->find($id);
-        return $this->view($car);
-    }
 
+    //Admin car delete
     /**
-     * @Rest\Delete("api/car/{id}")
+     * @Rest\Delete("api/admin/car/{id}")
+     * @Security(name="api_key")
+     * @SWG\Delete(
+     *     tags={"Admin/Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
      * @param Car $car
      * @return \FOS\RestBundle\View\View
      */
