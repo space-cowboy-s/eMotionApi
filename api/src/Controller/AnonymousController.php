@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use App\Service\MailerService;
 
 class AnonymousController extends AbstractFOSRestController
 {
@@ -122,12 +123,15 @@ class AnonymousController extends AbstractFOSRestController
      */
     public function postApiNewUser(User $user, UserManager $userManager, ConstraintViolationListInterface $validationErrors)
     {
+        $mailer = new MailerService();
+
         //We test if all the conditions are fulfilled (Assert in Entity / User)
         //Return -> Throw a 400 Bad Request with all errors messages
         $userManager->validateMyPostAssert($validationErrors);
 
         $this->em->persist($user);
         $this->em->flush();
+        $mailer->sendNewUserMail($user->getEmail(), $user->getFirstname());
         return $this->view($user, 201);
     }
 }

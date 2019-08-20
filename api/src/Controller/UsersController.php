@@ -12,6 +12,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use \Mailjet\Resources;
 
 class UsersController extends AbstractFOSRestController
 {

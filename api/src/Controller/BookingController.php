@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
+use App\Service\MailerService as Mailer;
 
 class BookingController extends AbstractFOSRestController
 {
