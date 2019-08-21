@@ -425,9 +425,14 @@ class BookingController extends AbstractFOSRestController
             $car = null;
         }
 
+        if ($user == null) {
+            return $this->view($user, 400);
+        }
+
         if ($car == null) {
             return $this->view($car, 400);
         }
+
         $startBooking = $request->get('startBooking');
         $endBooking = $request->get('endBooking');
         $totalPriceHT = $request->get('totalPriceHT');
