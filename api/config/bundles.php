@@ -16,9 +16,6 @@ return [
     Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle::class => ['dev' => true, 'test' => true],
     Hautelook\AliceBundle\HautelookAliceBundle::class => ['dev' => true, 'test' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
-<<<<<<< HEAD
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
-=======
     Mailjet\MailjetBundle\MailjetBundle::class => ['all' => true],
->>>>>>> a094e68907e968f95b624ea741162f6fd2cb8c69
 ];
