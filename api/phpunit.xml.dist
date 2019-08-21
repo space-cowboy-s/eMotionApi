@@ -18,11 +18,12 @@
         <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost(:[0-9]+)?$"/>
         <!-- ###- nelmio/cors-bundle ### -->
 =======
+>>>>>>> a094e68907e968f95b624ea741162f6fd2cb8c69
+
         <!-- ###+ mailjet/mailjet-bundle ### -->
         <env name="MAILJET_APIKEY_PUBLIC" value="your-api_key"/>
         <env name="MAILJET_APIKEY_PRIVATE" value="@@your-secret_key"/>
         <!-- ###- mailjet/mailjet-bundle ### -->
->>>>>>> a094e68907e968f95b624ea741162f6fd2cb8c69
     </php>
 
     <testsuites>
