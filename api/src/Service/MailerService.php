@@ -20,7 +20,7 @@ class MailerService
      */
     public function sendNewUserMail($to, $firstname)
     {
-        $mailJet = new Client(getenv('MJ_APIKEY_PUBLIC'), getenv('MJ_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
+        $mailJet = new Client(getenv('MAILJET_APIKEY_PUBLIC'), getenv('MAILJET_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
 
         $body = [
             'Messages' => [
@@ -47,7 +47,7 @@ class MailerService
 
     public function sendNewCheckoutMail($to, $firstname)
     {
-        $mailJet = new Client(getenv('MJ_APIKEY_PUBLIC'), getenv('MJ_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
+        $mailJet = new Client(getenv('MAILJET_APIKEY_PUBLIC'), getenv('MJ_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
 
         $body = [
             'Messages' => [

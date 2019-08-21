@@ -72,6 +72,11 @@ class Car
      */
     private $bail;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $location;
+
 
     public function getId(): ?int
     {
@@ -183,6 +188,24 @@ class Car
     {
         $this->bail = $bail;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     * @return Car
+     */
+    public function setLocation(string $location)
+    {
+        $this->location = $location;
         return $this;
     }
 
