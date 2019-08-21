@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use \Mailjet\Resources;
 
@@ -86,7 +87,7 @@ class UsersController extends AbstractFOSRestController
      *         ),
      *)
      */
-    public function patchApiUserProfile(UserManager $userManager, Request $request, ValidatorInterface $validator)
+    public function patchApiUserProfile(UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator)
     {
         $user = $this->getUser();
 
@@ -98,7 +99,9 @@ class UsersController extends AbstractFOSRestController
         $country = $request->get('country');
         $phone = $request->get('phone');
         $driverLicence = $request->get('driverLicence');
+        $password = $request->get('password');
 
+        $password_encode = $passwordEncoder->encodePassword($user, $password);
 
 
         if (null !== $firstname) {
@@ -131,6 +134,10 @@ class UsersController extends AbstractFOSRestController
 
         if (null !== $driverLicence) {
             $user->setCountry($driverLicence);
+        }
+
+        if (null !== $password_encode) {
+            $user->setPassword($password_encode);
         }
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)

@@ -180,6 +180,7 @@ class AnonymousController extends AbstractFOSRestController
      * @param UserManager $userManager
      * @param Request $request
      * @param ConstraintViolationListInterface $validationErrors
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function postApiNewUser(User $user, UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ConstraintViolationListInterface $validationErrors)
     {
