@@ -34,7 +34,7 @@ class BookingController extends AbstractFOSRestController
         $this->carRepository = $carRepository;
     }
 
-    //All Bookings
+    //Admin can see all Bookings
 
     /**
      * @Rest\Get("/api/admin/bookings")
@@ -302,8 +302,88 @@ class BookingController extends AbstractFOSRestController
         return $this->view('Booking are successfully removed !', 204);
     }
 
-    //User booking car
+    //User booking
+    //User can see his Bookings
 
+    /**
+     * @Rest\Get("/api/user/bookings")
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Security(name="api_key")
+     * @SWG\Get(
+     *      tags={"User/Booking"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     */
+    public function getApiAllUserBooking()
+    {
+        $user = $this->getUser();
+        $bookings = $this->bookingRepository->findBy(array('user' => $user));
+        return $this->view($bookings, 200);
+    }
+
+    //User can see one booking
+
+    /**
+     * @Rest\Get("/api/user/bookings/{id}")
+     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Security(name="api_key")
+     * @SWG\Get(
+     *      tags={"User/Booking"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     */
+    public function getApiOneUserBooking($id)
+    {
+        $user = $this->getUser();
+        $booking = $this->bookingRepository->findOneBy(array('user' => $user, 'id' => $id));
+
+        if ($booking == null) {
+            return $this->view($booking, 403);
+        }
+
+
+        return $this->view($booking, 200);
+    }
+
+    //User can booking car
     /**
      * @Rest\Post("/api/user/bookings/add")
      * @ParamConverter("booking", converter="fos_rest.request_body")
