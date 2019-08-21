@@ -2,7 +2,7 @@ nelmio_api_doc:
     models: { use_jms: false }
     documentation:
         info:
-            title: Bookink car
+            title: Booking car
             description: API for Bookink car.
             version: 1.0.0
         securityDefinitions:
