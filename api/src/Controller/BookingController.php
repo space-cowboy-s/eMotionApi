@@ -418,14 +418,16 @@ class BookingController extends AbstractFOSRestController
     {
         $user = $this->getUser();
 
-        /*Select car by brand and model*/
-        $carSelect = $request->get('car');
-        if (null !== $carSelect) {
-            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        $car = $request->get('car');
+        if (null !== $car) {
+            $car = $this->carRepository->findOneBy(array('id' => $car['id']));
         }else {
             $car = null;
         }
 
+        if ($car == null) {
+            return $this->view($car, 400);
+        }
         $startBooking = $request->get('startBooking');
         $endBooking = $request->get('endBooking');
         $totalPriceHT = $request->get('totalPriceHT');

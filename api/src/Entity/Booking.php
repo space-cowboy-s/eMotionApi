@@ -30,24 +30,25 @@ class Booking
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups("car")
      */
     private $car;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      * @Groups("booking")
      */
     private $startBooking;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      * @Groups("booking")
      */
     private $endBooking;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=false)
      * @Groups("booking")
      */
     private $totalPriceHT;
