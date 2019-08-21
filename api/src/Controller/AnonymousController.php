@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -29,6 +30,13 @@ class AnonymousController extends AbstractFOSRestController
         $this->em = $em;
     }
 
+    /**
+     * @Route("/", name="home")
+     */    public function home()
+    {
+
+        return $this->redirect('/api/doc');
+    }
 
     //Connexion
 
