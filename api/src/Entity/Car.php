@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CarRepository")
@@ -55,7 +56,7 @@ class Car
     private $numberKilometers;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      * @Groups("car")
      */
     private $purchaseDate;
@@ -155,12 +156,12 @@ class Car
         return $this;
     }
 
-    public function getPurchaseDate(): ?\DateTimeInterface
+    public function getPurchaseDate(): ?Date
     {
         return $this->purchaseDate;
     }
 
-    public function setPurchaseDate(\DateTimeInterface $purchaseDate): self
+    public function setPurchaseDate(Date $purchaseDate): self
     {
         $this->purchaseDate = $purchaseDate;
 
