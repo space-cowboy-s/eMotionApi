@@ -35,13 +35,13 @@ class Booking
     private $car;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups("booking")
      */
     private $startBooking;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups("booking")
      */
     private $endBooking;
@@ -81,24 +81,24 @@ class Booking
         return $this;
     }
 
-    public function getStartBooking(): ?\DateTimeInterface
+    public function getStartBooking(): ?string
     {
         return $this->startBooking;
     }
 
-    public function setStartBooking(\DateTimeInterface $startBooking): self
+    public function setStartBooking(string $startBooking): self
     {
         $this->startBooking = $startBooking;
 
         return $this;
     }
 
-    public function getEndBooking(): ?\DateTimeInterface
+    public function getEndBooking(): string
     {
         return $this->endBooking;
     }
 
-    public function setEndBooking(?\DateTimeInterface $endBooking): self
+    public function setEndBooking(string $endBooking): self
     {
         $this->endBooking = $endBooking;
 
