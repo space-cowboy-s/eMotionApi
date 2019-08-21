@@ -77,7 +77,10 @@ class Car
      */
     private $location;
 
-
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $availability;
 
     public function getId(): ?int
     {
@@ -207,6 +210,24 @@ class Car
     public function setLocation(string $location)
     {
         $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailability()
+    {
+        return $this->availability;
+    }
+
+    /**
+     * @param mixed $availability
+     * @return Car
+     */
+    public function setAvailability($availability)
+    {
+        $this->availability = $availability;
         return $this;
     }
 

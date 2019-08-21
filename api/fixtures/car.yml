@@ -10,4 +10,5 @@ App\Entity\Car:
     buyingPrice: <numberBetween(10000, 30000)>
     bail: <numberBetween(500, 5000)>
     location: <randomElement(["Paris", "Lyon"])>
+    availability: <boolean(50)>
 
