@@ -7,7 +7,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
@@ -36,13 +35,13 @@ class Booking
     private $car;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups("booking")
      */
     private $startBooking;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups("booking")
      */
     private $endBooking;
@@ -82,24 +81,24 @@ class Booking
         return $this;
     }
 
-    public function getStartBooking(): ?Date
+    public function getStartBooking(): ?string
     {
         return $this->startBooking;
     }
 
-    public function setStartBooking(Date $startBooking): self
+    public function setStartBooking(string $startBooking): self
     {
         $this->startBooking = $startBooking;
 
         return $this;
     }
 
-    public function getEndBooking(): Date
+    public function getEndBooking(): string
     {
         return $this->endBooking;
     }
 
-    public function setEndBooking(Date $endBooking): self
+    public function setEndBooking(string $endBooking): self
     {
         $this->endBooking = $endBooking;
 
