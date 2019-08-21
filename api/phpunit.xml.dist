@@ -12,6 +12,11 @@
         <env name="APP_ENV" value="test" />
         <env name="SHELL_VERBOSITY" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
+
+        <!-- ###+ mailjet/mailjet-bundle ### -->
+        <env name="MAILJET_APIKEY_PUBLIC" value="your-api_key"/>
+        <env name="MAILJET_APIKEY_PRIVATE" value="@@your-secret_key"/>
+        <!-- ###- mailjet/mailjet-bundle ### -->
     </php>
 
     <testsuites>
