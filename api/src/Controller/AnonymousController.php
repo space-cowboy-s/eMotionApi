@@ -4,30 +4,31 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Manager\UserManager;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use http\Env\Response;
+use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use App\Service\MailerService;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 class AnonymousController extends AbstractFOSRestController
 {
-    private $userRepository;
     private $em;
+    private $userManager;
+    private $passwordEncoder;
 
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, UserManager $userManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->userRepository = $userRepository;
+        $this->userManager = $userManager;
         $this->em = $em;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -67,20 +68,20 @@ class AnonymousController extends AbstractFOSRestController
      *         ),
      *)
      */
-    public function getApiConnexion(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function getApiConnexion(Request $request)
     {
         $userSelect = $request->get('user');
         $userByEmail = null;
 
         if (null !== $userSelect) {
-            $userByEmail = $this->userRepository->findOneBy(array('email' => $userSelect['email']));
+            $userByEmail = $this->userManager->findOneBy(array('email' => $userSelect['email']));
         }
 
         if ($userByEmail == null) {
             return $this->view($userByEmail, 404);
         }
 
-        if ($passwordEncoder->isPasswordValid($userByEmail, $userSelect['password'])) {
+        if ($this->passwordEncoder->isPasswordValid($userByEmail, $userSelect['password'])) {
             $user = $userByEmail;
         }
         else {
@@ -123,7 +124,7 @@ class AnonymousController extends AbstractFOSRestController
      */
     public function getApiAllUsers()
     {
-        $users = $this->userRepository->findAll();
+        $users = $this->userManager->findAll();
         return $this->view($users, 200);
     }
 
@@ -187,10 +188,11 @@ class AnonymousController extends AbstractFOSRestController
      * @param User $user
      * @param UserManager $userManager
      * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return View
      */
-    public function postApiNewUser(User $user, UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ConstraintViolationListInterface $validationErrors)
+    public function postApiNewUser(User $user, Request $request, ConstraintViolationListInterface $validationErrors)
     {
         $mailer = new MailerService();
         $firstname = $request->get('firstname');
@@ -203,7 +205,7 @@ class AnonymousController extends AbstractFOSRestController
         $driverLicence = $request->get('driverLicence');
         $password = $request->get('password');
 
-        $password_encode = $passwordEncoder->encodePassword($user, $password);
+        $password_encode = $this->passwordEncoder->encodePassword($user, $password);
 
 
         if (null !== $firstname) {
@@ -244,11 +246,11 @@ class AnonymousController extends AbstractFOSRestController
 
         //We test if all the conditions are fulfilled (Assert in Entity / User)
         //Return -> Throw a 400 Bad Request with all errors messages
-        $userManager->validateMyPostAssert($validationErrors);
+        $this->userManager->validateMyPostAssert($validationErrors);
 
         $this->em->persist($user);
         $this->em->flush();
         $mailer->sendNewUserMail($user->getEmail(), $user->getFirstname());
-        return $this->json($user, 201);
+        return $this->view($user, 201);
     }
 }

@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Booking;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CheckOutRepository")
@@ -23,18 +24,28 @@ class CheckOut
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @Assert\NotBlank
      * @Groups("checkout")
      */
     private $totalPrice;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("checkout")
      */
     private $paymentDate;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *     type="boolean",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("checkout")
      */
     private $paymentValidator;
