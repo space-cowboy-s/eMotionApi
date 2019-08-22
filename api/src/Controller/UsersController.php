@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Manager\UserManager;
-use App\Repository\BookingRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -13,20 +11,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use \Mailjet\Resources;
 
 class UsersController extends AbstractFOSRestController
 {
-    private $userRepository;
     private $em;
-    private $bookingRepository;
-    private $encoder;
+    private $userManager;
+    private $passwordEncoder;
 
-    public function __construct(UserRepository $userRepository, BookingRepository $bookingRepository, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, UserManager $userManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->userRepository = $userRepository;
+
         $this->em = $em;
-        $this->bookingRepository = $bookingRepository;
+        $this->userManager = $userManager;
+        $this->passwordEncoder = $passwordEncoder;
+
     }
 
     /**
@@ -86,8 +84,11 @@ class UsersController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return \FOS\RestBundle\View\View
      */
-    public function patchApiUserProfile(UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator)
+    public function patchApiUserProfile(Request $request, ValidatorInterface $validator)
     {
         $user = $this->getUser();
 
@@ -101,7 +102,7 @@ class UsersController extends AbstractFOSRestController
         $driverLicence = $request->get('driverLicence');
         $password = $request->get('password');
 
-        $password_encode = $passwordEncoder->encodePassword($user, $password);
+        $password_encode = $this->passwordEncoder->encodePassword($user, $password);
 
 
         if (null !== $firstname) {
@@ -142,7 +143,7 @@ class UsersController extends AbstractFOSRestController
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
-        $userManager->validateMyPatchAssert($user, $validator);
+        $this->userManager->validateMyPatchAssert($user, $validator);
 
         $this->em->persist($user);
         $this->em->flush();
