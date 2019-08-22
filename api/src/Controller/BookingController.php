@@ -416,9 +416,12 @@ class BookingController extends AbstractFOSRestController
      */
     public function postApiUserBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
     {
-        $user = $this->userRepository->find(12);
+        $user = $this->getUser();
 
-        $car = $request->get('car');
+        $data = json_decode($request->getContent(), true);
+
+        $car = $data['car'];
+
         if (null !== $car) {
             $car = $this->carRepository->findOneBy(array('id' => $car['id']));
         }else {
@@ -433,9 +436,9 @@ class BookingController extends AbstractFOSRestController
             return $this->view($car, 400);
         }
 
-        $startBooking = $request->get('startBooking');
-        $endBooking = $request->get('endBooking');
-        $totalPriceHT = $request->get('totalPriceHT');
+        $startBooking = $data['startBooking'];
+        $endBooking = $data['endBooking'];
+        $totalPriceHT = $data['totalPriceHT'];
 
         if (null !== $user) {
             $booking->setUser($user);
