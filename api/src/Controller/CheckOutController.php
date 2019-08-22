@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\CheckOut;
+use App\Manager\CheckOutManager;
 use App\Repository\BookingRepository;
 use App\Repository\CheckOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
@@ -31,15 +33,14 @@ class CheckOutController extends AbstractFOSRestController
 {
 
     private $em;
-    private $bookingRepository;
-    private $checkOutRepository;
+    private $bookingManager;
+    private $checkOutManager;
 
-    public function __construct(BookingRepository $bookingRepository, EntityManagerInterface $em, CheckOutRepository $checkOutRepository)
+    public function __construct(EntityManagerInterface $em, BookingManager $bookingManager, CheckOutManager $checkOutManager)
     {
-        $this->checkOutRepository = $checkOutRepository;
-        $this->bookingRepository = $bookingRepository;
         $this->em = $em;
-
+        $this->bookingManager = $bookingManager;
+        $this->checkOutManager = $checkOutManager;
     }
 
 
@@ -49,7 +50,7 @@ class CheckOutController extends AbstractFOSRestController
      * @Security(name="api_key")
      * @param $id
      * @SWG\Get(
-     *      tags={"user/checkout"},
+     *      tags={"User/Checkout"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",
@@ -71,11 +72,11 @@ class CheckOutController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *     )
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
     public function getApiUserOneCheckOut($id)
     {
-        $checkOut = $this->checkOutRepository->find($id);
+        $checkOut = $this->checkOutManager->find($id);
         return $this->view($checkOut);
     }
 
@@ -84,7 +85,7 @@ class CheckOutController extends AbstractFOSRestController
      * @Rest\View(serializerGroups={"userlight", "car", "booking", "checkout"})
      * @Security(name="api_key")
      * @SWG\Post(
-     *      tags={"User/checkout"},
+     *      tags={"User/Checkout"},
      *      @SWG\Response(
      *             response=201,
      *             description="Created",
@@ -102,17 +103,15 @@ class CheckOutController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
-     * @param Booking $booking
-     * @param BookingManager $bookingManager
-     * @param Request $request
+     * @param $id
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
-    public function postApiUserBooking($id)
+    public function postApiUserCheckout($id, ConstraintViolationListInterface $validationErrors)
     {
         $mail = new Mailer();
 
-        $booking = $this->bookingRepository->find($id);
+        $booking = $this->bookingManager->find($id);
         $date = date('d/m/Y');
         $checkOut = new checkOut;
         $checkOut->setBooking($booking);
@@ -123,6 +122,11 @@ class CheckOutController extends AbstractFOSRestController
         $this->em->flush();
         $user = $booking->getUser();
         $mail->sendNewCheckoutMail($user->getEmail(), $user->getFirstname(), $checkOut->getId());
+
+        //We test if all the conditions are fulfilled (Assert in Entity / User)
+        //Return -> Throw a 400 Bad Request with all errors messages
+        $this->checkOutManager->validateMyPostAssert($validationErrors);
+
         return $this->view($checkOut, 201);
     }
 
@@ -133,7 +137,7 @@ class CheckOutController extends AbstractFOSRestController
      */
     public function createBill($id)
     {
-        $checkout = $this->checkOutRepository->find($id);
+        $checkout = $this->checkOutManager->find($id);
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdf = new Dompdf($pdfOptions);

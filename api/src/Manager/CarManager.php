@@ -30,6 +30,21 @@ class CarManager
     }
 
 
+    public function findAll()
+    {
+        return $this->carRepository->findAll();
+    }
+
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return $this->carRepository->find($id, $lockMode, $lockVersion);
+    }
+
+    public function findOneBy($criteria)
+    {
+        return $this->carRepository->findOneBy($criteria);
+    }
+
     //We test if all the conditions are fulfilled (Assert in Entity / User)
     public function validateMyPostAssert(ConstraintViolationListInterface $validationErrors)
     {

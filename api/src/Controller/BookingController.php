@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Booking;
 use App\Manager\BookingManager;
-use App\Repository\BookingRepository;
-use App\Repository\CarRepository;
-use App\Repository\UserRepository;
+use App\Manager\CarManager;
+use App\Manager\UserManager;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,17 +21,17 @@ use App\Service\MailerService as Mailer;
 
 class BookingController extends AbstractFOSRestController
 {
-    private $userRepository;
     private $em;
-    private $bookingRepository;
-    private $carRepository;
+    private $userManager;
+    private $bookingManager;
+    private $carManager;
 
-    public function __construct(UserRepository $userRepository, BookingRepository $bookingRepository, CarRepository $carRepository, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, UserManager $userManager, BookingManager $bookingManager, CarManager $carManager)
     {
-        $this->userRepository = $userRepository;
         $this->em = $em;
-        $this->bookingRepository = $bookingRepository;
-        $this->carRepository = $carRepository;
+        $this->userManager = $userManager;
+        $this->bookingManager = $bookingManager;
+        $this->carManager = $carManager;
     }
 
     //Admin can see all Bookings
@@ -66,7 +66,7 @@ class BookingController extends AbstractFOSRestController
      */
     public function getApiAdminAllBooking()
     {
-        $booking = $this->bookingRepository->findAll();
+        $booking = $this->bookingManager->findAll();
         return $this->view($booking, 200);
     }
 
@@ -100,7 +100,7 @@ class BookingController extends AbstractFOSRestController
      *         ),
      *     )
      * @param Booking $booking
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
     public function getApiAdminOneBooking(Booking $booking)
     {
@@ -133,27 +133,26 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
-     * @param Booking $booking
-     * @param BookingManager $bookingManager
      * @param Request $request
+     * @param Booking $booking
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
-    public function postApiAdminBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
+    public function postApiAdminBooking(Request $request, Booking $booking, ConstraintViolationListInterface $validationErrors)
     {
         /*Select user by email*/
         $userSelect = $request->get('user');
         if (null !== $userSelect) {
-            $user = $this->userRepository->findOneBy(array('email' => $userSelect));
-        }else {
+            $user = $this->userManager->findOneBy(array('email' => $userSelect));
+        } else {
             $user = null;
         }
 
         /*Select car by brand and model*/
         $carSelect = $request->get('car');
         if (null !== $carSelect) {
-            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
-        }else {
+            $car = $this->carManager->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        } else {
             $car = null;
         }
 
@@ -183,7 +182,7 @@ class BookingController extends AbstractFOSRestController
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
-        $bookingManager->validateMyPostAssert($validationErrors);
+        $this->bookingManager->validateMyPostAssert($validationErrors);
 
         $this->em->persist($booking);
         $this->em->flush();
@@ -215,21 +214,20 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
-     * @param BookingManager $bookingManager
-     * @param ValidatorInterface $validator
      * @param Request $request
+     * @param ValidatorInterface $validator
      * @param $id
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
-    public function patchApiAdminBooking(BookingManager $bookingManager, ValidatorInterface $validator, Request $request, $id)
+    public function patchApiAdminBooking(Request $request, ValidatorInterface $validator, $id)
     {
-        $booking = $this->bookingRepository->find($id);
+        $booking = $this->bookingManager->find($id);
 
         /*Select car by brand and model*/
         $carSelect = $request->get('car');
         if (null !== $carSelect) {
-            $car = $this->carRepository->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
-        }else {
+            $car = $this->carManager->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        } else {
             $car = null;
         }
 
@@ -255,7 +253,7 @@ class BookingController extends AbstractFOSRestController
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
-        $bookingManager->validateMyPatchAssert($booking, $validator);
+        $this->bookingManager->validateMyPatchAssert($booking, $validator);
 
         $this->em->persist($booking);
         $this->em->flush();
@@ -292,12 +290,12 @@ class BookingController extends AbstractFOSRestController
      *         ),
      *)
      * @param Booking $booking
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
     public function deleteApiBooking(Booking $booking)
     {
-            $this->em->remove($booking);
-            $this->em->flush();
+        $this->em->remove($booking);
+        $this->em->flush();
 
         return $this->view('Booking are successfully removed !', 204);
     }
@@ -336,7 +334,7 @@ class BookingController extends AbstractFOSRestController
     public function getApiAllUserBooking()
     {
         $user = $this->getUser();
-        $bookings = $this->bookingRepository->findBy(array('user' => $user));
+        $bookings = $this->bookingManager->findBy(array('user' => $user));
         return $this->view($bookings, 200);
     }
 
@@ -369,11 +367,13 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
+     * @param $id
+     * @return View
      */
     public function getApiOneUserBooking($id)
     {
         $user = $this->getUser();
-        $booking = $this->bookingRepository->findOneBy(array('user' => $user, 'id' => $id));
+        $booking = $this->bookingManager->findOneBy(array('user' => $user, 'id' => $id));
 
         if ($booking == null) {
             return $this->view($booking, 403);
@@ -384,6 +384,7 @@ class BookingController extends AbstractFOSRestController
     }
 
     //User can booking car
+
     /**
      * @Rest\Post("/api/user/bookings/add")
      * @ParamConverter("booking", converter="fos_rest.request_body")
@@ -412,16 +413,16 @@ class BookingController extends AbstractFOSRestController
      * @param BookingManager $bookingManager
      * @param Request $request
      * @param ConstraintViolationListInterface $validationErrors
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
-    public function postApiUserBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
+    public function postApiUserBooking(Request $request, Booking $booking, ConstraintViolationListInterface $validationErrors)
     {
         $user = $this->getUser();
 
         $car = $request->get('car');
         if (null !== $car) {
-            $car = $this->carRepository->findOneBy(array('id' => $car['id']));
-        }else {
+            $car = $this->carManager->findOneBy(array('id' => $car['id']));
+        } else {
             $car = null;
         }
 
@@ -455,7 +456,7 @@ class BookingController extends AbstractFOSRestController
 
         //We test if all the conditions are fulfilled (Assert in Entity / Booking)
         //Return -> Throw a 400 Bad Request with all errors messages
-        $bookingManager->validateMyPostAssert($validationErrors);
+        $this->bookingManager->validateMyPostAssert($validationErrors);
 
         $this->em->persist($booking);
         $this->em->flush();

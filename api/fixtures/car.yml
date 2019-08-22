@@ -11,4 +11,4 @@ App\Entity\Car:
     bail: <numberBetween(500, 5000)>
     location: <randomElement(["Paris", "Lyon"])>
     availability: <boolean(50)>
-    type: <randomElement([“Voiture”, “scooter”])>
+    type: <randomElement([Voiture, scooter])>
