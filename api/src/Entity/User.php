@@ -74,6 +74,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      * @Groups("user")
+     * @Groups("apiUser")
      */
     private $apiKey;
 
@@ -99,12 +100,12 @@ class User implements UserInterface
     private $country;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $driverLicence;
 

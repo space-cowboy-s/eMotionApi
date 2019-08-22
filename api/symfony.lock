@@ -86,6 +86,15 @@
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "hautelook/alice-bundle": {
         "version": "2.1",
         "recipe": {
@@ -97,6 +106,24 @@
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "mailjet/mailjet-apiv3-php": {
+        "version": "v1.4.1"
+    },
+    "mailjet/mailjet-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "48a7f92015372654b5056855da5e94d54bd8d948"
+        },
+        "files": [
+            "config/packages/mailjet.yaml"
+        ]
+    },
+    "mailjet/mailjet-swiftmailer": {
+        "version": "1.0.6"
     },
     "monolog/monolog": {
         "version": "1.24.0"
@@ -121,6 +148,18 @@
             "version": "3.0",
             "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
         }
+    },
+    "nelmio/cors-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "6e1f64cc0f55362be49764634e8f14ce34a033c6"
+        },
+        "files": [
+            "config/packages/nelmio_cors.yaml"
+        ]
     },
     "nikic/php-parser": {
         "version": "v4.1.1"
@@ -152,14 +191,17 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.0"
     },
     "psr/simple-cache": {
         "version": "1.0.1"
     },
-    "sabberworm/php-css-parser": {
-        "version": "8.1.0"
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sebastian/comparator": {
         "version": "3.0.2"
@@ -181,6 +223,9 @@
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
+    },
+    "swiftmailer/swiftmailer": {
+        "version": "v5.4.12"
     },
     "symfony/asset": {
         "version": "v4.2.2"

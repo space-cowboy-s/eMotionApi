@@ -30,24 +30,25 @@ class Booking
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups("car")
      */
     private $car;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      * @Groups("booking")
      */
     private $startBooking;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      * @Groups("booking")
      */
     private $endBooking;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=false)
      * @Groups("booking")
      */
     private $totalPriceHT;
@@ -86,24 +87,24 @@ class Booking
         return $this;
     }
 
-    public function getStartBooking(): ?\DateTimeInterface
+    public function getStartBooking(): ?string
     {
         return $this->startBooking;
     }
 
-    public function setStartBooking(\DateTimeInterface $startBooking): self
+    public function setStartBooking(string $startBooking): self
     {
         $this->startBooking = $startBooking;
 
         return $this;
     }
 
-    public function getEndBooking(): ?\DateTimeInterface
+    public function getEndBooking(): string
     {
         return $this->endBooking;
     }
 
-    public function setEndBooking(?\DateTimeInterface $endBooking): self
+    public function setEndBooking(string $endBooking): self
     {
         $this->endBooking = $endBooking;
 

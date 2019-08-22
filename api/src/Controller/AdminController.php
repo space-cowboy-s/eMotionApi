@@ -7,6 +7,7 @@ use App\Manager\UserManager;
 use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
 
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -14,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -159,15 +161,66 @@ class AdminController extends AbstractFOSRestController
      *         ),
      *)
      */
-    public function postApiAdmiAddUser(User $user, UserManager $userManager, ConstraintViolationListInterface $validationErrors)
+    public function postApiAdmiAddUser(User $user, UserManager $userManager, Request $request, UserPasswordEncoderInterface $passwordEncoder, ConstraintViolationListInterface $validationErrors)
     {
+        $mailer = new MailerService();
+        $firstname = $request->get('firstname');
+        $lastname = $request->get('lastname');
+        $email = $request->get('email');
+        $birthDate = $request->get('birthDate');
+        $adress = $request->get('adress');
+        $country = $request->get('country');
+        $phone = $request->get('phone');
+        $driverLicence = $request->get('driverLicence');
+        $password = $request->get('password');
+
+        $password_encode = $passwordEncoder->encodePassword($user, $password);
+
+
+        if (null !== $firstname) {
+            $user->setFirstname($firstname);
+        }
+
+        if (null !== $lastname) {
+            $user->setLastname($lastname);
+        }
+
+        if (null !== $email) {
+            $user->setEmail($email);
+        }
+
+        if (null !== $birthDate) {
+            $user->setAdress($birthDate);
+        }
+
+        if (null !== $adress) {
+            $user->setAdress($adress);
+        }
+
+        if (null !== $country) {
+            $user->setCountry($country);
+        }
+
+        if (null !== $phone) {
+            $user->setCountry($phone);
+        }
+
+        if (null !== $driverLicence) {
+            $user->setCountry($driverLicence);
+        }
+
+        if (null !== $password_encode) {
+            $user->setPassword($password_encode);
+        }
+
         //We test if all the conditions are fulfilled (Assert in Entity / User)
         //Return -> Throw a 400 Bad Request with all errors messages
         $userManager->validateMyPostAssert($validationErrors);
 
         $this->em->persist($user);
         $this->em->flush();
-        return $this->view($user, 201);
+        $mailer->sendNewUserMail($user->getEmail(), $user->getFirstname());
+        return $this->json($user, 201);
     }
 
     /**
@@ -194,24 +247,23 @@ class AdminController extends AbstractFOSRestController
      *         ),
      *)
      */
-    public function patchApiAdminProfile(Request $request, UserManager $userManager, ValidatorInterface $validator)
+    public function patchApiAdminProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder, UserManager $userManager, ValidatorInterface $validator)
     {
-        //We test if all the conditions are fulfilled (Assert in Entity / User)
-        //Return false if not
         $user = $this->getUser();
 
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
         $email = $request->get('email');
+        $birthDate = $request->get('birthDate');
         $adress = $request->get('adress');
         $country = $request->get('country');
-        //Find Booking with id
-        $booking_id = $request->get('booking');
-        if (null !== $booking_id) {
-            $booking = $this->bookingRepository->find($booking_id);
-        } else {
-            $booking = null;
-        }
+        $phone = $request->get('phone');
+        $driverLicence = $request->get('driverLicence');
+        $password = $request->get('password');
+
+        $password_encode = $passwordEncoder->encodePassword($user, $password);
+
+
 
         if (null !== $firstname) {
             $user->setFirstname($firstname);
@@ -225,6 +277,10 @@ class AdminController extends AbstractFOSRestController
             $user->setEmail($email);
         }
 
+        if (null !== $birthDate) {
+            $user->setAdress($birthDate);
+        }
+
         if (null !== $adress) {
             $user->setAdress($adress);
         }
@@ -233,8 +289,16 @@ class AdminController extends AbstractFOSRestController
             $user->setCountry($country);
         }
 
-        if (null !== $booking) {
-            $user->setBooking($booking);
+        if (null !== $phone) {
+            $user->setCountry($phone);
+        }
+
+        if (null !== $driverLicence) {
+            $user->setCountry($driverLicence);
+        }
+
+        if (null !== $password_encode) {
+            $user->setPassword($password_encode);
         }
 
         //We test if all the conditions are fulfilled (Assert in Entity / User)
@@ -275,8 +339,13 @@ class AdminController extends AbstractFOSRestController
         $firstname = $request->get('firstname');
         $lastname = $request->get('lastname');
         $email = $request->get('email');
+        $birthDate = $request->get('birthDate');
         $adress = $request->get('adress');
         $country = $request->get('country');
+        $phone = $request->get('phone');
+        $driverLicence = $request->get('driverLicence');
+
+
 
         if (null !== $firstname) {
             $user->setFirstname($firstname);
@@ -290,12 +359,24 @@ class AdminController extends AbstractFOSRestController
             $user->setEmail($email);
         }
 
+        if (null !== $birthDate) {
+            $user->setAdress($birthDate);
+        }
+
         if (null !== $adress) {
             $user->setAdress($adress);
         }
 
         if (null !== $country) {
             $user->setCountry($country);
+        }
+
+        if (null !== $phone) {
+            $user->setCountry($phone);
+        }
+
+        if (null !== $driverLicence) {
+            $user->setCountry($driverLicence);
         }
 
         //We test if all the conditions are fulfilled (Assert in Entity / User)

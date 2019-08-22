@@ -55,7 +55,7 @@ class Car
     private $numberKilometers;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
      * @Groups("car")
      */
     private $purchaseDate;
@@ -68,9 +68,19 @@ class Car
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("car")
      */
     private $bail;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $availability;
 
     public function getId(): ?int
     {
@@ -149,12 +159,12 @@ class Car
         return $this;
     }
 
-    public function getPurchaseDate(): ?\DateTimeInterface
+    public function getPurchaseDate(): ?string
     {
         return $this->purchaseDate;
     }
 
-    public function setPurchaseDate(\DateTimeInterface $purchaseDate): self
+    public function setPurchaseDate(string $purchaseDate): self
     {
         $this->purchaseDate = $purchaseDate;
 
@@ -182,6 +192,42 @@ class Car
     {
         $this->bail = $bail;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param mixed $location
+     * @return Car
+     */
+    public function setLocation(string $location)
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailability()
+    {
+        return $this->availability;
+    }
+
+    /**
+     * @param mixed $availability
+     * @return Car
+     */
+    public function setAvailability($availability)
+    {
+        $this->availability = $availability;
         return $this;
     }
 
