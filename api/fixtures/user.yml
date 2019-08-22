@@ -4,6 +4,7 @@ App\Entity\User:
     lastname: <lastName()>
     password: <password()>
     email: <email()>
+    birthdate: <date('Y-m-d', '-18 years')>
     adress: <streetAddress()>
     country: <country()>
     phone: <e164PhoneNumber()>

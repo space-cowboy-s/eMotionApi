@@ -3,5 +3,5 @@ App\Entity\Booking:
     user: '@user_*'
     car: '@car_*'
     startBooking: <date('Y-m-d', 'now')>
-    endBooking: <date('Y-m-d', 'now')>
+    endBooking: <date('Y-m-d', '+1 day')>
     totalPriceHT: <numberBetween(200, 4000)>
