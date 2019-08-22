@@ -19,6 +19,16 @@ class UserManager
         $this->userRepository = $userRepository;
     }
 
+    public function findAll()
+    {
+        return $this->userRepository->findAll();
+    }
+
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return $this->userRepository->find($id, $lockMode, $lockVersion);
+    }
+
     //We test if all the conditions are fulfilled (Assert in Entity / User)
     public function validateMyPostAssert(ConstraintViolationListInterface $validationErrors)
     {

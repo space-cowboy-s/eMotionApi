@@ -74,11 +74,13 @@ class Car
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("car")
      */
     private $location;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("car")
      */
     private $availability;
 
