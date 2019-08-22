@@ -65,7 +65,7 @@ class CarController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/api/cars")
+     * @Rest\Get("/api/admin/cars")
      * @Rest\View(serializerGroups={"car"})
      * @SWG\Get(
      *     tags={"Car"},
@@ -245,6 +245,9 @@ class CarController extends AbstractFOSRestController
         }
         if ($request->get("bail") !== null) {
             $car->setBail($request->get("bail"));
+        }
+        if ($request->get("type") !== null) {
+            $car->setType($request->get("type"));
         }
 
         $this->em->persist($car);
