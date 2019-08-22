@@ -65,8 +65,36 @@ class CarController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Get("/api/cars")
+     * @Rest\View(serializerGroups={"car"})
+     * @SWG\Get(
+     *     tags={"Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     */
+    public function getApiAdminCars()
+    {
+        $car = $this->carRepository->findAll();
 
+        return $this->json($car, 200);
+    }
 
+    /**
      * @Rest\Get("/api/car/{id}")
      * @SWG\Get(
      *     tags={"Car"},
@@ -95,6 +123,7 @@ class CarController extends AbstractFOSRestController
         $car = $this->carRepository->find($id);
         return $this->view($car);
     }
+
 
     //Admin car add
     /**
@@ -188,7 +217,7 @@ class CarController extends AbstractFOSRestController
         }
 
         if (!empty($errors)) {
-            throw new BadRequestHttpException(\json_encode($errors));
+            throw new BadRequestHttpException(json_encode($errors));
         }
         if ($request->get("brand") !== null) {
             $car->setBrand($request->get("brand"));
@@ -209,7 +238,7 @@ class CarController extends AbstractFOSRestController
             $car->setNumberKilometers($request->get("numberKilometers"));
         }
         if ($request->get("purchaseDate") !== null) {
-            $car->setPurchaseDate(new \DateTime($request->get("purchaseDate")));
+            $car->setPurchaseDate(($request->get("purchaseDate")));
         }
         if ($request->get("buyingPrice") !== null) {
             $car->setBuyingPrice($request->get("buyingPrice"));
@@ -256,5 +285,35 @@ class CarController extends AbstractFOSRestController
         $this->em->flush();
 
         return $this->view("Vehicle deleted");
+    }
+
+    /**
+     * @Rest\Get("/api/admin/car/{id}")
+     * @SWG\Get(
+     *     tags={"Car"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param int $id
+     * @return \FOS\RestBundle\View\View
+     */
+    public function getApiAdminCar(int $id)
+    {
+        $car = $this->carRepository->find($id);
+        return $this->view($car);
     }
 }

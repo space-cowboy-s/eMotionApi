@@ -19,7 +19,6 @@ class User implements UserInterface
     {
         $this->roles = array('ROLE_USER');
         $this->apiKey = mt_rand(1000, 100000);
-        $this->birthDate = new \DateTime();
         $this->bookings = new ArrayCollection();
     }
 
@@ -79,10 +78,8 @@ class User implements UserInterface
     private $apiKey;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime(
-     *     message="The value {{ value }} is not a valid date."
-     * )
+     * @ORM\Column(type="string")
+     *
      * @Groups("user")
      */
     private $birthDate;
@@ -185,12 +182,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?string
     {
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTimeInterface $birthDate): self
+    public function setBirthDate(string $birthDate): self
     {
         $this->birthDate = $birthDate;
 
