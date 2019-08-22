@@ -416,7 +416,7 @@ class BookingController extends AbstractFOSRestController
      */
     public function postApiUserBooking(Booking $booking, BookingManager $bookingManager, Request $request, ConstraintViolationListInterface $validationErrors)
     {
-        $user = $this->getUser();
+        $user = $this->userRepository->find(12);
 
         $car = $request->get('car');
         if (null !== $car) {
