@@ -34,11 +34,12 @@ class BookingController extends AbstractFOSRestController
         $this->carManager = $carManager;
     }
 
+    //Admin
     //Admin can see all Bookings
 
     /**
      * @Rest\Get("/api/admin/bookings")
-     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Rest\View(serializerGroups={"user", "car", "booking"})
      * @Security(name="api_key")
      * @SWG\Get(
      *      tags={"Admin/Booking"},
@@ -292,7 +293,275 @@ class BookingController extends AbstractFOSRestController
      * @param Booking $booking
      * @return View
      */
-    public function deleteApiBooking(Booking $booking)
+    public function deleteApiAdminBooking(Booking $booking)
+    {
+        $this->em->remove($booking);
+        $this->em->flush();
+
+        return $this->view('Booking are successfully removed !', 204);
+    }
+
+
+    //Owner Booking
+    //Owner can see all Bookings
+
+    /**
+     * @Rest\Get("/api/owner/bookings")
+     * @Rest\View(serializerGroups={"user", "car", "booking"})
+     * @Security(name="api_key")
+     * @SWG\Get(
+     *      tags={"Owner/Booking"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     */
+    public function getApiOwnerAllBooking()
+    {
+        $booking = $this->bookingManager->findAll();
+        return $this->view($booking, 200);
+    }
+
+    //Owner can see one Bookings
+
+    /**
+     * @Rest\Get("/api/owner/bookings/{id}")
+     * @Rest\View(serializerGroups={"userlight", "carlight", "bookinglight"})
+     * @Security(name="api_key")
+     * @SWG\Get(
+     *      tags={"Owner/Booking"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *     )
+     * @param Booking $booking
+     * @return View
+     */
+    public function getApiOwnerOneBooking(Booking $booking)
+    {
+        return $this->view($booking, 200);
+    }
+
+    //Add booking by owner
+
+    /**
+     * @Rest\Post("/api/owner/bookings/add")
+     * @ParamConverter("booking", converter="fos_rest.request_body")
+     * @Rest\View(serializerGroups={"userlight", "carlight", "bookinglight"})
+     * @Security(name="api_key")
+     * @SWG\Post(
+     *      tags={"Owner/Booking"},
+     *      @SWG\Response(
+     *             response=201,
+     *             description="Created",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param Request $request
+     * @param Booking $booking
+     * @param ConstraintViolationListInterface $validationErrors
+     * @return View
+     */
+    public function postApiOwnerBooking(Request $request, Booking $booking, ConstraintViolationListInterface $validationErrors)
+    {
+        /*Select user by email*/
+        $userSelect = $request->get('user');
+        if (null !== $userSelect) {
+            $user = $this->userManager->findOneBy(array('email' => $userSelect));
+        } else {
+            $user = null;
+        }
+
+        /*Select car by brand and model*/
+        $carSelect = $request->get('car');
+        if (null !== $carSelect) {
+            $car = $this->carManager->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        } else {
+            $car = null;
+        }
+
+        $startBooking = $request->get('startBooking');
+        $endBooking = $request->get('endBooking');
+        $totalPriceHT = $request->get('totalPriceHT');
+
+        if (null !== $user) {
+            $booking->setUser($user);
+        }
+
+        if (null !== $car) {
+            $booking->setCar($car);
+        }
+
+        if (null !== $startBooking) {
+            $booking->setStartBooking($startBooking);
+        }
+
+        if (null !== $endBooking) {
+            $booking->setEndBooking($endBooking);
+        }
+
+        if (null !== $totalPriceHT) {
+            $booking->setTotalPriceHT($totalPriceHT);
+        }
+
+        //We test if all the conditions are fulfilled (Assert in Entity / Booking)
+        //Return -> Throw a 400 Bad Request with all errors messages
+        $this->bookingManager->validateMyPostAssert($validationErrors);
+
+        $this->em->persist($booking);
+        $this->em->flush();
+        return $this->view($booking, 201);
+    }
+
+    //Edit One Bookings by owner
+
+    /**
+     * @Rest\Patch("/api/owner/bookings/edit/{id}")
+     * @Rest\View(serializerGroups={"userlight", "carlight", "bookinglight"})
+     * @Security(name="api_key")
+     * @SWG\Patch(
+     *      tags={"Owner/Booking"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @param $id
+     * @return View
+     */
+    public function patchApiOwnerBooking(Request $request, ValidatorInterface $validator, $id)
+    {
+        $booking = $this->bookingManager->find($id);
+
+        /*Select car by brand and model*/
+        $carSelect = $request->get('car');
+        if (null !== $carSelect) {
+            $car = $this->carManager->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+        } else {
+            $car = null;
+        }
+
+        $startBooking = $request->get('startBooking');
+        $endBooking = $request->get('endBooking');
+        $totalPriceHT = $request->get('totalPriceHT');
+
+        if (null !== $car) {
+            $booking->setCar($car);
+        }
+
+        if (null !== $startBooking) {
+            $booking->setStartBooking($startBooking);
+        }
+
+        if (null !== $endBooking) {
+            $booking->setEndBooking($endBooking);
+        }
+
+        if (null !== $totalPriceHT) {
+            $booking->setTotalPriceHT($totalPriceHT);
+        }
+
+        //We test if all the conditions are fulfilled (Assert in Entity / Booking)
+        //Return -> Throw a 400 Bad Request with all errors messages
+        $this->bookingManager->validateMyPatchAssert($booking, $validator);
+
+        $this->em->persist($booking);
+        $this->em->flush();
+        return $this->view($booking, 200);
+    }
+
+    //Delete one Booking by owner
+
+    /**
+     * @Rest\Delete("/api/owner/bookings/remove/{id}")
+     * @Rest\View(serializerGroups={"userlight", "carlight", "bookinglight"})
+     * @Security(name="api_key")
+     * @SWG\Delete(
+     *      tags={"Owner/Booking"},
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *      @SWG\Response(
+     *             response=500,
+     *             description="Foreign Key Violation",
+     *         ),
+     *)
+     * @param Booking $booking
+     * @return View
+     */
+    public function deleteApiOwnerBooking(Booking $booking)
     {
         $this->em->remove($booking);
         $this->em->flush();
@@ -305,7 +574,7 @@ class BookingController extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/api/user/bookings")
-     * @Rest\View(serializerGroups={"userlight", "car", "booking"})
+     * @Rest\View(serializerGroups={"userlight", "carlight", "bookinglight"})
      * @Security(name="api_key")
      * @SWG\Get(
      *      tags={"User/Booking"},
@@ -409,9 +678,8 @@ class BookingController extends AbstractFOSRestController
      *             description="Not Found",
      *         ),
      *)
-     * @param Booking $booking
-     * @param BookingManager $bookingManager
      * @param Request $request
+     * @param Booking $booking
      * @param ConstraintViolationListInterface $validationErrors
      * @return View
      */

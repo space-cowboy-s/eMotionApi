@@ -11,5 +11,7 @@ App\Entity\User:
     driverLicence: <numberBetween(10000, 90000)>
   user_{1} (extends user):
     roles: [ROLE_ADMIN]
-  user_{2..10} (extends user):
+  user_{2} (extends user):
+    roles: [ROLE_OWNER]
+  user_{3..10} (extends user):
 

@@ -27,6 +27,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $brand;
 
@@ -38,6 +39,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $model;
 
@@ -49,6 +51,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $serialNumber;
 
@@ -60,6 +63,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $color;
 
@@ -71,6 +75,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $numberplate;
 
@@ -82,6 +87,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $numberKilometers;
 
@@ -93,6 +99,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $purchaseDate;
 
@@ -104,6 +111,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $buyingPrice;
 
@@ -115,6 +123,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $bail;
 
@@ -126,6 +135,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $location;
 
@@ -136,6 +146,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $availability;
 
@@ -147,6 +158,7 @@ class Car
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $type;
 

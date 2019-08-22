@@ -87,6 +87,7 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
+     * @Groups("userlight")
      */
     private $birthDate;
 
@@ -97,6 +98,7 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
+     * @Groups("userlight")
      */
     private $adress;
 
@@ -107,6 +109,7 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
+     * @Groups("userlight")
      */
     private $country;
 
@@ -117,6 +120,8 @@ class User implements UserInterface
      *     type="string",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Groups("user")
+     * @Groups("userlight")
      */
     private $phone;
 
@@ -127,11 +132,14 @@ class User implements UserInterface
      *     type="string",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Groups("user")
+     * @Groups("userlight")
      */
     private $driverLicence;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="user", orphanRemoval=true)
+     * @Groups("user")
      */
     private $bookings;
 

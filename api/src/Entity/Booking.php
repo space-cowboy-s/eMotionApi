@@ -24,7 +24,7 @@ class Booking
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("userlight")
+     * @Groups("bookinglight")
      */
     private $user;
 
@@ -32,6 +32,7 @@ class Booking
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("car")
+     * @Groups("bookinglight")
      */
     private $car;
 
@@ -43,6 +44,7 @@ class Booking
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $startBooking;
 
@@ -54,6 +56,7 @@ class Booking
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $endBooking;
 
@@ -65,6 +68,7 @@ class Booking
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $totalPriceHT;
 
