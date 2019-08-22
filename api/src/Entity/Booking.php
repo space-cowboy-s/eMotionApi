@@ -53,6 +53,11 @@ class Booking
      */
     private $totalPriceHT;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CheckOut", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private $checkOut;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +119,23 @@ class Booking
     public function setTotalPriceHT(float $totalPriceHT): self
     {
         $this->totalPriceHT = $totalPriceHT;
+
+        return $this;
+    }
+
+    public function getCheckOut(): ?CheckOut
+    {
+        return $this->checkOut;
+    }
+
+    public function setCheckOut(CheckOut $checkOut): self
+    {
+        $this->checkOut = $checkOut;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $checkOut->getBooking()) {
+            $checkOut->setBooking($this);
+        }
 
         return $this;
     }

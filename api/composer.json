@@ -6,6 +6,10 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+
+        "dompdf/dompdf": "^0.8.3",
+
+
         "friendsofsymfony/rest-bundle": "^2.5",
         "mailjet/mailjet-bundle": "^2.0",
         "nelmio/api-doc-bundle": "^3.3",
