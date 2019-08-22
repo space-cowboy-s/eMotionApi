@@ -21,8 +21,10 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\MailerService as Mailer;
 
 
 class CheckOutController extends AbstractFOSRestController
@@ -108,6 +110,8 @@ class CheckOutController extends AbstractFOSRestController
      */
     public function postApiUserBooking($id)
     {
+        $mail = new Mailer();
+
         $booking = $this->bookingRepository->find($id);
         $date = date('d/m/Y');
         $checkOut = new checkOut;
@@ -117,6 +121,8 @@ class CheckOutController extends AbstractFOSRestController
         $checkOut->setTotalPrice($booking->getTotalPriceHT());
         $this->em->persist($checkOut);
         $this->em->flush();
+        $user = $booking->getUser();
+        $mail->sendNewCheckoutMail($user->getEmail(), $user->getFirstname(), $checkOut->getId());
         return $this->view($checkOut, 201);
     }
 

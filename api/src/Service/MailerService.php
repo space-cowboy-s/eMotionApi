@@ -8,6 +8,7 @@
 
 namespace App\Service;
 
+use http\Url;
 use \Mailjet\Resources;
 use \Mailjet\Client as Client;
 
@@ -16,7 +17,6 @@ class MailerService
     /**
      * @param $to
      * @param $firstname
-     * @return bool
      */
     public function sendNewUserMail($to, $firstname)
     {
@@ -45,9 +45,13 @@ class MailerService
         $response->success() && var_dump($response->getData());
     }
 
-    public function sendNewCheckoutMail($to, $firstname)
+    /**
+     * @param $to
+     * @param $firstname
+     */
+    public function sendNewCheckoutMail($to, $firstname, $id)
     {
-        $mailJet = new Client(getenv('MAILJET_APIKEY_PUBLIC'), getenv('MJ_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
+        $mailJet = new Client(getenv('MAILJET_APIKEY_PUBLIC'), getenv('MAILJET_APIKEY_PRIVATE'), true, ['version' => 'v3.1']);
 
         $body = [
             'Messages' => [
@@ -62,9 +66,9 @@ class MailerService
                             'Name' => $firstname
                         ]
                     ],
-                    'Subject' => "Bienvenue sur eMotion !",
+                    'Subject' => "Vôtre réservation sur eMotion !",
                     'TextPart' => "Bienvenue sur eMotion !",
-                    'HTMLPart' => "<h1>Bonjour $firstname</h1> <p>Merci d'avoir réservé chez eMotion</p> <p>Vous trouverez ci-joint votre facture concernant votre commande</p>"
+                    'HTMLPart' => "<h1>Bonjour $firstname</h1> <p>merci d'avoir reservé sur le site eMotion !</p> <p> vous trouverez ci-joint votre facture</p> <a href='api.atcreative.fr/checkout/pdf/" . $id . "' target=\"_blank\">votre facture</a>"
                 ]
             ]
         ];

@@ -203,6 +203,9 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
+    "sabberworm/php-css-parser": {
+        "version": "8.1.0"
+    },
     "sebastian/comparator": {
         "version": "3.0.2"
     },
