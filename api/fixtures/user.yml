@@ -4,11 +4,15 @@ App\Entity\User:
     lastname: <lastName()>
     password: <password()>
     email: <email()>
+    birthdate: <date('Y-m-d', '-18 years')>
     adress: <streetAddress()>
     country: <country()>
     phone: <e164PhoneNumber()>
     driverLicence: <numberBetween(10000, 90000)>
+    loyaltyPoints: <numberBetween(1, 100)>
   user_{1} (extends user):
     roles: [ROLE_ADMIN]
-  user_{2..10} (extends user):
+  user_{2} (extends user):
+    roles: [ROLE_OWNER]
+  user_{3..10} (extends user):
 

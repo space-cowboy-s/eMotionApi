@@ -17,6 +17,7 @@ class CreateAdminCommand extends Command
     protected static $defaultName = 'app:create-admin';
     const PHONE = '0612345678';
     const DRIVER_LICENCE = 'XXXX-XXXX-XXXX';
+    const BIRTDATE = 'XX-XX-XXXX';
     private $entityManager;
     private $encoder;
 
@@ -47,6 +48,7 @@ class CreateAdminCommand extends Command
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPhone(self::PHONE);
         $user->setDriverLicence(self::DRIVER_LICENCE);
+        $user->setBirthDate(self::BIRTDATE);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         $io->success(sprintf('You have created a User with email: %s', $email));

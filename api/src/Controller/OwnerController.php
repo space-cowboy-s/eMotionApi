@@ -2,37 +2,43 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Manager\BookingManager;
 use App\Manager\UserManager;
+use App\Service\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UsersController extends AbstractFOSRestController
+
+class OwnerController extends AbstractFOSRestController
 {
     private $em;
     private $userManager;
+    private $bookingManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $em, UserManager $userManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $em, UserManager $userManager, BookingManager $bookingManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-
         $this->em = $em;
         $this->userManager = $userManager;
+        $this->bookingManager = $bookingManager;
         $this->passwordEncoder = $passwordEncoder;
-
     }
 
     /**
-     * @Rest\Get("/api/user/profile")
-     * @Rest\View(serializerGroups={"user", "booking"})
+     * @Rest\Get("/api/owner/profile")
+     * @Rest\View(serializerGroups={"userlight"})
      * @Security(name="api_key")
      * @SWG\Get(
-     *     tags={"User"},
+     *      tags={"Owner"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",
@@ -55,18 +61,90 @@ class UsersController extends AbstractFOSRestController
      *         ),
      *)
      */
-    public function getApiUserProfile()
+    public function getApiOwnerProfile()
     {
         $user = $this->getUser();
         return $this->view($user, 200);
     }
 
     /**
-     * @Rest\Patch("/api/user/profile")
-     * @Rest\View(serializerGroups={"user", "booking"})
+     * @Rest\Get("/api/owner/users/profile/{id}")
+     * @Rest\View(serializerGroups={"userlight"})
+     * @Security(name="api_key"),
+     * @SWG\Get(
+     *      tags={"Owner"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     * @param User $user
+     * @return View
+     */
+    public function getApiOwnerUserProfile(User $user)
+    {
+        return $this->view($user, 200);
+    }
+
+    //List of all users
+
+    /**
+     * @Rest\Get("/api/owner/users")
+     * @Rest\View(serializerGroups={"userlight"})
+     * @Security(name="api_key")
+     * @SWG\Get(
+     *      tags={"Owner"},
+     *      @SWG\Response(
+     *             response=200,
+     *             description="Success",
+     *         ),
+     *     @SWG\Response(
+     *             response=204,
+     *             description="No Content",
+     *         ),
+     *      @SWG\Response(
+     *             response=400,
+     *             description="Bad Request",
+     *         ),
+     *      @SWG\Response(
+     *             response=403,
+     *             description="Forbiden",
+     *         ),
+     *      @SWG\Response(
+     *             response=404,
+     *             description="Not Found",
+     *         ),
+     *)
+     */
+    public function getApiOwnerAllUsers()
+    {
+        $users = $this->userManager->findAll();
+        return $this->view($users, 200);
+    }
+
+
+    /**
+     * @Rest\Patch("/api/owner/profile")
+     * @Rest\View(serializerGroups={"userlight"})
      * @Security(name="api_key")
      * @SWG\Patch(
-     *     tags={"User"},
+     *      tags={"Owner"},
      *      @SWG\Response(
      *             response=200,
      *             description="Success",
@@ -86,9 +164,9 @@ class UsersController extends AbstractFOSRestController
      *)
      * @param Request $request
      * @param ValidatorInterface $validator
-     * @return \FOS\RestBundle\View\View
+     * @return View
      */
-    public function patchApiUserProfile(Request $request, ValidatorInterface $validator)
+    public function patchApiOwnerProfile(Request $request, ValidatorInterface $validator)
     {
         $user = $this->getUser();
 
@@ -141,7 +219,7 @@ class UsersController extends AbstractFOSRestController
             $user->setPassword($password_encode);
         }
 
-        //We test if all the conditions are fulfilled (Assert in Entity / Booking)
+        //We test if all the conditions are fulfilled (Assert in Entity / User)
         //Return -> Throw a 400 Bad Request with all errors messages
         $this->userManager->validateMyPatchAssert($user, $validator);
 

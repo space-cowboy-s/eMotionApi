@@ -71,7 +71,6 @@ class AdminControllerTest extends WebTestCase
         $this->assertArrayHasKey('country', $user);
         $this->assertArrayHasKey('roles', $user);
         $this->assertArrayHasKey('apiKey', $user);
-        $this->assertArrayHasKey('Booking', $user);
 
         $this->assertEquals(200, $response->getStatusCode());
     }

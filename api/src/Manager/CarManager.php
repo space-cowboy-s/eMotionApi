@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Repository\CarRepository;
 
 class CarManager
 {
@@ -23,11 +24,26 @@ class CarManager
      * CarManager constructor.
      * @param $carRepository
      */
-    public function __construct($carRepository)
+    public function __construct(CarRepository $carRepository)
     {
         $this->carRepository = $carRepository;
     }
 
+
+    public function findAll()
+    {
+        return $this->carRepository->findAll();
+    }
+
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return $this->carRepository->find($id, $lockMode, $lockVersion);
+    }
+
+    public function findOneBy($criteria)
+    {
+        return $this->carRepository->findOneBy($criteria);
+    }
 
     //We test if all the conditions are fulfilled (Assert in Entity / User)
     public function validateMyPostAssert(ConstraintViolationListInterface $validationErrors)

@@ -19,7 +19,6 @@ class User implements UserInterface
     {
         $this->roles = array('ROLE_USER');
         $this->apiKey = mt_rand(1000, 100000);
-        $this->birthDate = new \DateTime();
         $this->bookings = new ArrayCollection();
     }
 
@@ -28,13 +27,14 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Groups("user")
+     * @Groups("apiUser")
      */
     private $id;
 
     /**
      * @ORM\Column(type="simple_array")
-     * @Assert\NotBlank
      * @Groups("user")
+     * @Assert\NotBlank
      */
     private $roles = [];
 
@@ -67,56 +67,90 @@ class User implements UserInterface
      *     message = "The email '{{ value }}' is not a valid email."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
-     * @Groups("user")
+     * @Assert\NotBlank
+     * @Groups("apiUser")
      */
     private $apiKey;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime(
-     *     message="The value {{ value }} is not a valid date."
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
+     * @Groups("userlight")
      */
     private $birthDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("user")
      */
     private $adress;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("user")
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("user")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("user")
      */
     private $driverLicence;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="user", orphanRemoval=true)
+     * @Groups("user")
      */
     private $bookings;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $loyaltyPoints;
 
 
     public function getId(): ?int
@@ -184,12 +218,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?string
     {
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTimeInterface $birthDate): self
+    public function setBirthDate(string $birthDate): self
     {
         $this->birthDate = $birthDate;
 
@@ -299,6 +333,18 @@ class User implements UserInterface
                 $booking->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLoyaltyPoints(): ?int
+    {
+        return $this->loyaltyPoints;
+    }
+
+    public function setLoyaltyPoints(?int $loyaltyPoints): self
+    {
+        $this->loyaltyPoints = $loyaltyPoints;
 
         return $this;
     }

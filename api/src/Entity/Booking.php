@@ -22,52 +22,64 @@ class Booking
     private $id;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $priceBooking;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookings")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("bookinglight")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("car")
+     * @Groups("bookinglight")
      */
     private $car;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $startBooking;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $endBooking;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("booking")
+     * @Groups("bookinglight")
      */
     private $totalPriceHT;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CheckOut", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private $checkOut;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPriceBooking(): ?float
-    {
-        return $this->priceBooking;
-    }
-
-    public function setPriceBooking(float $priceBooking): self
-    {
-        $this->priceBooking = $priceBooking;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -94,24 +106,24 @@ class Booking
         return $this;
     }
 
-    public function getStartBooking(): ?\DateTimeInterface
+    public function getStartBooking(): ?string
     {
         return $this->startBooking;
     }
 
-    public function setStartBooking(\DateTimeInterface $startBooking): self
+    public function setStartBooking(string $startBooking): self
     {
         $this->startBooking = $startBooking;
 
         return $this;
     }
 
-    public function getEndBooking(): ?\DateTimeInterface
+    public function getEndBooking(): string
     {
         return $this->endBooking;
     }
 
-    public function setEndBooking(?\DateTimeInterface $endBooking): self
+    public function setEndBooking(string $endBooking): self
     {
         $this->endBooking = $endBooking;
 
@@ -126,6 +138,23 @@ class Booking
     public function setTotalPriceHT(float $totalPriceHT): self
     {
         $this->totalPriceHT = $totalPriceHT;
+
+        return $this;
+    }
+
+    public function getCheckOut(): ?CheckOut
+    {
+        return $this->checkOut;
+    }
+
+    public function setCheckOut(CheckOut $checkOut): self
+    {
+        $this->checkOut = $checkOut;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $checkOut->getBooking()) {
+            $checkOut->setBooking($this);
+        }
 
         return $this;
     }

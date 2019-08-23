@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CarRepository")
@@ -20,57 +21,146 @@ class Car
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $model;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $serialNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $numberplate;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $numberKilometers;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $purchaseDate;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Groups("car")
+     * @Groups("carlight")
      */
     private $buyingPrice;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="float",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("car")
+     * @Groups("carlight")
      */
     private $bail;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("car")
+     * @Groups("carlight")
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *     type="boolean",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("car")
+     * @Groups("carlight")
+     */
+    private $availability;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Groups("car")
+     * @Groups("carlight")
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -149,12 +239,12 @@ class Car
         return $this;
     }
 
-    public function getPurchaseDate(): ?\DateTimeInterface
+    public function getPurchaseDate(): ?string
     {
         return $this->purchaseDate;
     }
 
-    public function setPurchaseDate(\DateTimeInterface $purchaseDate): self
+    public function setPurchaseDate(string $purchaseDate): self
     {
         $this->purchaseDate = $purchaseDate;
 
@@ -185,15 +275,52 @@ class Car
         return $this;
     }
 
-    public function getPricePerDay(): ?float
+    /**
+     * @return mixed
+     */
+    public function getLocation()
     {
-        return $this->pricePerDay;
+        return $this->location;
     }
 
-    public function setPricePerDay(float $pricePerDay): self
+    /**
+     * @param mixed $location
+     * @return Car
+     */
+    public function setLocation(string $location)
     {
-        $this->pricePerDay = $pricePerDay;
+        $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailability()
+    {
+        return $this->availability;
+    }
+
+    /**
+     * @param mixed $availability
+     * @return Car
+     */
+    public function setAvailability($availability)
+    {
+        $this->availability = $availability;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
+
 }

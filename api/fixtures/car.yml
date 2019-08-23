@@ -6,6 +6,9 @@ App\Entity\Car:
     color: <colorName()>
     numberplate: <postcode()>
     numberKilometers: <numberBetween(10, 100000)>
-    purchaseDate: <dateTime('now', 'Europe/Paris')>
+    purchaseDate: <date('Y-m-d', 'now')>
     buyingPrice: <numberBetween(10000, 30000)>
     bail: <numberBetween(500, 5000)>
+    location: <randomElement(["Paris", "Lyon"])>
+    availability: <boolean(50)>
+    type: <randomElement([Voiture, scooter])>
