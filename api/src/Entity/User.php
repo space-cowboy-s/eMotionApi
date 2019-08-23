@@ -34,7 +34,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="simple_array")
      * @Assert\NotBlank
-     * @Groups("user")
      */
     private $roles = [];
 
@@ -74,7 +73,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank
-     * @Groups("user")
      * @Groups("apiUser")
      */
     private $apiKey;
