@@ -420,7 +420,7 @@ class BookingController extends AbstractFOSRestController
         /*Select car by brand and model*/
         $carSelect = $request->get('car');
         if (null !== $carSelect) {
-            $car = $this->carManager->findOneBy(array('brand' => $carSelect['brand'], 'model' => $carSelect['model']));
+            $car = $this->carManager->findOneBy(array('brand' => $carSelect['id']));
         } else {
             $car = null;
         }
