@@ -33,6 +33,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="simple_array")
+     * @Groups("user")
      * @Assert\NotBlank
      */
     private $roles = [];
