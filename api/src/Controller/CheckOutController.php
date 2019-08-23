@@ -77,7 +77,7 @@ class CheckOutController extends AbstractFOSRestController
     public function getApiUserOneCheckOut($id)
     {
         $checkOut = $this->checkOutManager->find($id);
-        return $this->view($checkOut);
+        return $this->view($checkOut, 200);
     }
 
     /**
@@ -107,9 +107,10 @@ class CheckOutController extends AbstractFOSRestController
      * @param ConstraintViolationListInterface $validationErrors
      * @return View
      */
-    public function postApiUserCheckout($id, ConstraintViolationListInterface $validationErrors)
+    public function postApiUserCheckout($id)
     {
         $mail = new Mailer();
+        $user = $this->getUser();
 
         $booking = $this->bookingManager->find($id);
         $date = date('d/m/Y');
@@ -118,14 +119,15 @@ class CheckOutController extends AbstractFOSRestController
         $checkOut->setPaymentValidator(1);
         $checkOut->setPaymentDate($date);
         $checkOut->setTotalPrice($booking->getTotalPriceHT());
+
+        //Add loyalty points
+        $loyalityPoints = ($user->getLoyaltyPoints()) + 5;
+        $user->setLoyaltyPoints($loyalityPoints);
+
         $this->em->persist($checkOut);
         $this->em->flush();
         $user = $booking->getUser();
         $mail->sendNewCheckoutMail($user->getEmail(), $user->getFirstname(), $checkOut->getId());
-
-        //We test if all the conditions are fulfilled (Assert in Entity / User)
-        //Return -> Throw a 400 Bad Request with all errors messages
-        $this->checkOutManager->validateMyPostAssert($validationErrors);
 
         return $this->view($checkOut, 201);
     }

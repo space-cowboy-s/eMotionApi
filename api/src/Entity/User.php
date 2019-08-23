@@ -67,7 +67,6 @@ class User implements UserInterface
      *     message = "The email '{{ value }}' is not a valid email."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $email;
 
@@ -97,7 +96,6 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $adress;
 
@@ -108,7 +106,6 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $country;
 
@@ -120,7 +117,6 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $phone;
 
@@ -132,7 +128,6 @@ class User implements UserInterface
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Groups("user")
-     * @Groups("userlight")
      */
     private $driverLicence;
 

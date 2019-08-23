@@ -9,6 +9,7 @@ App\Entity\User:
     country: <country()>
     phone: <e164PhoneNumber()>
     driverLicence: <numberBetween(10000, 90000)>
+    loyaltyPoints: <numberBetween(1, 100)>
   user_{1} (extends user):
     roles: [ROLE_ADMIN]
   user_{2} (extends user):
