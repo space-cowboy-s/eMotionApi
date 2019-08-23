@@ -147,6 +147,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $loyaltyPoints;
+
 
     public function getId(): ?int
     {
@@ -328,6 +333,18 @@ class User implements UserInterface
                 $booking->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLoyaltyPoints(): ?int
+    {
+        return $this->loyaltyPoints;
+    }
+
+    public function setLoyaltyPoints(?int $loyaltyPoints): self
+    {
+        $this->loyaltyPoints = $loyaltyPoints;
 
         return $this;
     }
